@@ -147,7 +147,7 @@ export default function SignInPage() {
         <p className="mt-6 text-base text-[#555566]">
           New here?{" "}
           <Link
-            href="/signup"
+            href="/sign-up"
             className="font-bold text-[#555566] underline underline-offset-2 hover:text-[#4038F5]"
           >
             Sign Up

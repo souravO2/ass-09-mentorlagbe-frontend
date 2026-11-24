@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react"
 import { useSession, authClient } from "@/lib/auth-client"
 import { toast } from "sonner"
+import { redirect } from "next/navigation"
 
 import { Button } from "@/components/ui/button"
 import {
@@ -44,11 +45,7 @@ export default function ProfilePage() {
   }
 
   if (!session?.user) {
-    return (
-      <div className="grid min-h-screen place-items-center bg-[#F7F4FF]">
-        Please sign in to view your profile.
-      </div>
-    )
+    return redirect("/sign-in")
   }
 
   return <ProfileForm key={session.user.id} user={session.user} />
