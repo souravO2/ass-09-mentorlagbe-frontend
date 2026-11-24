@@ -30,7 +30,7 @@ const PriceCard = () => {
       {plans.map((plan) => (
         <div
           key={plan.role}
-          className={`${plan.color} ${plan.textColor} flex min-h-[235px] flex-col items-start rounded-[16px] border-2 border-black p-6 shadow-[5px_5px_0_#111]`}
+          className={`${plan.color} ${plan.textColor} flex min-h-58.75 flex-col items-start rounded-2xl border-2 border-black p-6 shadow-[5px_5px_0_#111]`}
         >
           <span className="rounded-full border-2 border-black bg-white px-3 py-1 text-[11px] font-bold text-black">
             {plan.role}
@@ -40,12 +40,12 @@ const PriceCard = () => {
             {plan.price} {plan.name}
           </h2>
 
-          <p className="mt-3 max-w-[420px] text-sm leading-[22px]">
+          <p className="mt-3 max-w-105 text-sm leading-5.5">
             {plan.description}
           </p>
 
           <button
-            className={`${plan.buttonColor} mt-4 cursor-pointer rounded-full border-2 border-black px-6 py-3 text-sm font-bold text-black shadow-[2px_3px_0_#111] transition-all hover:translate-y-[1px] hover:shadow-none`}
+            className={`${plan.buttonColor} mt-4 cursor-pointer rounded-full border-2 border-black px-6 py-3 text-sm font-bold text-black shadow-[2px_3px_0_#111] transition-all hover:translate-y-px hover:shadow-none`}
             onClick={() => {
               // Connect Stripe checkout here
             }}

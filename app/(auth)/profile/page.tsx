@@ -264,13 +264,23 @@ function ProfileForm({ user }: { user: ProfileUser }) {
                   value={role}
                   onValueChange={(value) => setRole(value as UserRole)}
                 >
-                  <SelectTrigger className="h-12 rounded-xl border-2 border-black focus:ring-[#CBB8FF]">
+                  <SelectTrigger className="h-12 rounded-xl border-2 border-black bg-white font-semibold shadow-[3px_3px_0_black] focus:ring-[#CBB8FF]">
                     <SelectValue placeholder="Select account type" />
                   </SelectTrigger>
 
-                  <SelectContent>
-                    <SelectItem value="student">Student</SelectItem>
-                    <SelectItem value="tutor">Tutor</SelectItem>
+                  <SelectContent className="rounded-xl border-2 border-black bg-white p-1 shadow-[4px_4px_0_black]">
+                    <SelectItem
+                      value="student"
+                      className="cursor-pointer rounded-lg font-semibold focus:bg-[#CBB8FF] focus:text-black data-[state=checked]:bg-[#FFDA3F]"
+                    >
+                      Student
+                    </SelectItem>
+                    <SelectItem
+                      value="tutor"
+                      className="cursor-pointer rounded-lg font-semibold focus:bg-[#CBB8FF] focus:text-black data-[state=checked]:bg-[#FFDA3F]"
+                    >
+                      Tutor
+                    </SelectItem>
                   </SelectContent>
                 </Select>
               </div>
@@ -280,7 +290,7 @@ function ProfileForm({ user }: { user: ProfileUser }) {
                   type="button"
                   disabled={isUploading || isSaving}
                   onClick={() => setShowConfirm(true)}
-                  className="h-12 rounded-full border-2 border-black bg-[#FFDA3F] px-7 font-bold text-black shadow-[3px_3px_0_black] transition hover:translate-x-0.5 hover:translate-y-0.5 hover:bg-[#FFDA3F] hover:shadow-none disabled:cursor-not-allowed disabled:opacity-60"
+                  className="h-12 cursor-pointer rounded-full border-2 border-black bg-[#FFDA3F] px-7 font-bold text-black shadow-[3px_3px_0_black] transition hover:translate-x-0.5 hover:translate-y-0.5 hover:bg-[#FFDA3F] hover:shadow-none disabled:cursor-not-allowed disabled:opacity-60"
                 >
                   {isUploading
                     ? "Uploading image..."

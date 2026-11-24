@@ -69,7 +69,7 @@ export function ProfileImageUpload({
             size="icon"
             variant="destructive"
             onClick={handleDelete}
-            className="absolute -top-2 -right-2 size-9 rounded-full border-2 border-black"
+            className="absolute -top-2 -right-2 size-9 cursor-pointer rounded-full border-2 border-black hover:bg-coral"
             aria-label="Delete profile picture"
           >
             <Trash2 className="size-4" />
@@ -81,7 +81,7 @@ export function ProfileImageUpload({
         type="button"
         variant="outline"
         onClick={() => inputRef.current?.click()}
-        className="rounded-full border-2 border-black font-bold shadow-[3px_3px_0_black] hover:translate-y-0.5 hover:shadow-none"
+        className="cursor-pointer rounded-full border-2 border-black font-bold shadow-[3px_3px_0_black] hover:translate-y-0.5 hover:shadow-none"
       >
         <Camera className="mr-2 size-4" />
         Choose Image

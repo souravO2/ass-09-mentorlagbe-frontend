@@ -79,7 +79,7 @@ export default function ProfileMenu({ user }: { user: User }) {
     <DropdownMenu>
       <DropdownMenuTrigger
         aria-label="Open account menu"
-        className="flex items-center gap-2.5 rounded-full border-2 border-ink bg-white py-1 pr-3 pl-1 shadow-hard-sm outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-2"
+        className="flex cursor-pointer items-center gap-2.5 rounded-full border-2 border-ink bg-white py-1 pr-3 pl-1 shadow-hard-sm outline-none focus-visible:ring-2 focus-visible:ring-blue focus-visible:ring-offset-2"
       >
         <Avatar className="size-9 border-2 border-ink">
           <AvatarImage src={user.image ?? undefined} alt="" />
