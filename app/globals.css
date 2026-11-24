@@ -1,0 +1,35 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+@import "shadcn/tailwind.css";
+
+:root {
+  --ink: #111111;
+  --blue: #3D3BF3;
+  --lemon: #FFD93D;
+  --coral: #FF5D43;
+  --mint: #8DF0C2;
+  --lilac: #C9B8FF;
+  --sky: #9AD7FF;
+  --pink: #FFB8D9;
+  --paper: #F7F5FF;
+  --ink-soft: #454554;
+}
+
+@theme inline {
+  --color-ink: var(--ink);
+  --color-blue: var(--blue);
+  --color-lemon: var(--lemon);
+  --color-coral: var(--coral);
+  --color-mint: var(--mint);
+  --color-lilac: var(--lilac);
+  --color-sky: var(--sky);
+  --color-pink: var(--pink);
+  --color-paper: var(--paper);
+  --color-ink-soft: var(--ink-soft);
+
+  --font-heading: var(--font-archivo), sans-serif;
+  --font-sans: var(--font-dm-sans), sans-serif;
+
+  --shadow-hard: 4px 4px 0 var(--ink);
+  --shadow-hard-sm: 3px 3px 0 var(--ink);
+}
