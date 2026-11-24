@@ -64,7 +64,7 @@ export default function SignInPage() {
 
   return (
     <main className="flex min-h-screen items-center justify-center bg-[#4038F5] px-4 py-10">
-      <section className="w-full max-w-[600px] rounded-[20px] border-2 border-[#171717] bg-white px-7 py-10 shadow-[6px_7px_0_#171717] sm:px-11 sm:py-11">
+      <section className="w-full max-w-150 rounded-[20px] border-2 border-[#171717] bg-white px-7 py-10 shadow-[6px_7px_0_#171717] sm:px-11 sm:py-11">
         {/* Logo */}
         <div className="mb-5 flex items-center gap-3">
           <div className="flex h-12 w-12 items-center justify-center rounded-xl border-2 border-[#171717] bg-[#4038F5] text-xl font-extrabold text-white">
@@ -120,7 +120,7 @@ export default function SignInPage() {
               <Button
                 type="submit"
                 disabled={submitting}
-                className="h-[60px] w-full cursor-pointer rounded-full border-2 border-[#171717] bg-[#4038F5] text-lg font-bold text-white shadow-[4px_5px_0_#171717] transition hover:bg-[#342CE0] hover:shadow-[4px_6px_0_#171717] active:translate-y-1 active:shadow-none disabled:opacity-60"
+                className="h-15 w-full cursor-pointer rounded-full border-2 border-[#171717] bg-[#4038F5] text-lg font-bold text-white shadow-[4px_5px_0_#171717] transition hover:bg-[#342CE0] hover:shadow-[4px_6px_0_#171717] active:translate-y-1 active:shadow-none disabled:opacity-60"
               >
                 {submitting && <Loader2 className="size-4 animate-spin" />}
 
@@ -134,7 +134,7 @@ export default function SignInPage() {
                 type="button"
                 variant="outline"
                 onClick={handleGoogle}
-                className="h-[60px] w-full cursor-pointer rounded-full border-2 border-[#171717] bg-white text-lg font-bold text-[#171717] shadow-[4px_5px_0_#171717] transition hover:bg-gray-50 hover:shadow-[4px_6px_0_#171717] active:translate-y-1 active:shadow-none"
+                className="h-15 w-full cursor-pointer rounded-full border-2 border-[#171717] bg-white text-lg font-bold text-[#171717] shadow-[4px_5px_0_#171717] transition hover:bg-gray-50 hover:shadow-[4px_6px_0_#171717] active:translate-y-1 active:shadow-none"
               >
                 <FcGoogle className="size-5" />
                 Continue with Google

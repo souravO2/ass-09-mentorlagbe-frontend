@@ -81,7 +81,7 @@ export function ProfileImageUpload({
         type="button"
         variant="outline"
         onClick={() => inputRef.current?.click()}
-        className="rounded-full border-2 border-black font-bold shadow-[3px_3px_0_black] hover:translate-y-[2px] hover:shadow-none"
+        className="rounded-full border-2 border-black font-bold shadow-[3px_3px_0_black] hover:translate-y-0.5 hover:shadow-none"
       >
         <Camera className="mr-2 size-4" />
         Choose Image

@@ -9,6 +9,7 @@ import NavLinks from "./NavLinks"
 import NavButtons from "./NavButtons"
 import { signOut } from "@/lib/auth-client"
 import { RoleBadge } from "./ProfileMenu"
+import Image from "next/image"
 
 type MobileUser = {
   name: string
@@ -114,7 +115,7 @@ export default function MobileMenu({
         aria-label={open ? "Close menu" : "Open menu"}
         aria-expanded={open}
         onClick={() => setOpen(!open)}
-        className="relative z-[60] grid size-11 place-items-center rounded-full border-2 border-ink bg-lemon shadow-hard-sm"
+        className="relative z-60 grid size-11 place-items-center rounded-full border-2 border-ink bg-lemon shadow-hard-sm"
       >
         {open ? <X className="size-5" /> : <Menu className="size-5" />}
       </button>
@@ -128,7 +129,7 @@ export default function MobileMenu({
             className="fixed inset-0 -z-10 bg-black/30"
           />
 
-          <div className="absolute top-full right-0 left-0 z-50 max-h-[calc(100dvh_-_6rem)] overflow-y-auto overscroll-contain border-b-2 border-ink bg-paper px-6 pt-6 pb-8 shadow-hard">
+          <div className="absolute top-full right-0 left-0 z-50 max-h-[calc(100dvh-6rem)] overflow-y-auto overscroll-contain border-b-2 border-ink bg-paper px-6 pt-6 pb-8 shadow-hard">
             <div className="mx-auto max-w-7xl">
               <NavLinks
                 onNavigate={() => setOpen(false)}
@@ -142,7 +143,7 @@ export default function MobileMenu({
                   <div className="mb-5 flex items-center gap-3">
                     <div className="grid size-12 shrink-0 place-items-center overflow-hidden rounded-full border-2 border-ink bg-lilac font-bold">
                       {user.image ? (
-                        <img
+                        <Image
                           src={user.image}
                           alt={user.name}
                           className="size-full object-cover"

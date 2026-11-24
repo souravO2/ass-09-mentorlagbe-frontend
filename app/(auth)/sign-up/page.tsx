@@ -89,7 +89,7 @@ export default function SignUpPage() {
 
   return (
     <main className="flex min-h-screen items-center justify-center bg-[#4038F5] px-4 py-10">
-      <section className="w-full max-w-[570px] rounded-[20px] border-2 border-[#171717] bg-white px-7 py-9 shadow-[6px_7px_0_#171717] sm:px-10 sm:py-10">
+      <section className="w-full max-w-142.5 rounded-[20px] border-2 border-[#171717] bg-white px-7 py-9 shadow-[6px_7px_0_#171717] sm:px-10 sm:py-10">
         {/* Logo */}
         <div className="mb-5 flex items-center gap-3">
           <div className="flex h-12 w-12 items-center justify-center rounded-xl border-2 border-[#171717] bg-[#4038F5] text-xl font-extrabold text-white">
@@ -102,7 +102,7 @@ export default function SignUpPage() {
         </div>
 
         {/* Heading */}
-        <h1 className="mb-6 max-w-[390px] text-[42px] leading-[1.08] font-extrabold tracking-tight text-[#171717] sm:text-[48px]">
+        <h1 className="mb-6 max-w-97.5 text-[42px] leading-[1.08] font-extrabold tracking-tight text-[#171717] sm:text-[48px]">
           Create your account
         </h1>
 
@@ -114,7 +114,7 @@ export default function SignUpPage() {
                 type="button"
                 onClick={() => setRole("student")}
                 aria-pressed={role === "student"}
-                className={`h-[70px] rounded-[19px] border-2 border-[#171717] text-lg font-bold transition ${
+                className={`h-17.5 rounded-[19px] border-2 border-[#171717] text-lg font-bold transition ${
                   role === "student"
                     ? "-translate-y-0.5 bg-[#FFDA3F] shadow-[0_6px_0_#171717]"
                     : "bg-white hover:bg-gray-50"
@@ -127,7 +127,7 @@ export default function SignUpPage() {
                 type="button"
                 onClick={() => setRole("tutor")}
                 aria-pressed={role === "tutor"}
-                className={`h-[70px] rounded-[19px] border-2 border-[#171717] text-lg font-bold transition ${
+                className={`h-17.5 rounded-[19px] border-2 border-[#171717] text-lg font-bold transition ${
                   role === "tutor"
                     ? "-translate-y-0.5 bg-[#FFDA3F] shadow-[0_6px_0_#171717]"
                     : "bg-white hover:bg-gray-50"
@@ -220,7 +220,7 @@ export default function SignUpPage() {
               <Button
                 type="submit"
                 disabled={submitting}
-                className="h-[60px] w-full cursor-pointer rounded-full border-2 border-[#171717] bg-[#4038F5] text-lg font-bold text-white shadow-[4px_5px_0_#171717] transition hover:bg-[#342CE0] hover:shadow-[4px_6px_0_#171717] active:translate-y-1 active:shadow-none disabled:opacity-60"
+                className="h-15 w-full cursor-pointer rounded-full border-2 border-[#171717] bg-[#4038F5] text-lg font-bold text-white shadow-[4px_5px_0_#171717] transition hover:bg-[#342CE0] hover:shadow-[4px_6px_0_#171717] active:translate-y-1 active:shadow-none disabled:opacity-60"
               >
                 {submitting && <Loader2 className="size-4 animate-spin" />}
                 {submitting ? "Creating account..." : "Sign Up"}

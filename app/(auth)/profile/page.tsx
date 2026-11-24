@@ -215,7 +215,7 @@ function ProfileForm({ user }: { user: ProfileUser }) {
           </div>
         </header>
 
-        <section className="rounded-[24px] border-2 border-black bg-white p-6 shadow-[5px_5px_0_black] md:p-10">
+        <section className="rounded-3xl border-2 border-black bg-white p-6 shadow-[5px_5px_0_black] md:p-10">
           <div className="grid gap-10 md:grid-cols-[180px_1fr]">
             <ProfileImageUpload
               imagePreview={imagePreview}
@@ -280,7 +280,7 @@ function ProfileForm({ user }: { user: ProfileUser }) {
                   type="button"
                   disabled={isUploading || isSaving}
                   onClick={() => setShowConfirm(true)}
-                  className="h-12 rounded-full border-2 border-black bg-[#FFDA3F] px-7 font-bold text-black shadow-[3px_3px_0_black] transition hover:translate-x-[2px] hover:translate-y-[2px] hover:bg-[#FFDA3F] hover:shadow-none disabled:cursor-not-allowed disabled:opacity-60"
+                  className="h-12 rounded-full border-2 border-black bg-[#FFDA3F] px-7 font-bold text-black shadow-[3px_3px_0_black] transition hover:translate-x-0.5 hover:translate-y-0.5 hover:bg-[#FFDA3F] hover:shadow-none disabled:cursor-not-allowed disabled:opacity-60"
                 >
                   {isUploading
                     ? "Uploading image..."
