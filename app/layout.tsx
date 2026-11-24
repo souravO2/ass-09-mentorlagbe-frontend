@@ -1,5 +1,5 @@
 import { Archivo, DM_Sans } from "next/font/google"
-
+import { Metadata } from "next"
 import "./globals.css"
 import { ThemeProvider } from "@/components/theme-provider"
 import Navbar from "@/components/Navbar/Navbar"
@@ -11,6 +11,15 @@ const archivo = Archivo({
   variable: "--font-archivo",
 })
 const dmSans = DM_Sans({ subsets: ["latin"], variable: "--font-dm-sans" })
+
+export const metadata: Metadata = {
+  title: {
+    default: "MentorLagbe",
+    template: "MentorLagbe | %s",
+  },
+  description:
+    "MentorLagbe is a platform that connects students with verified tutors for tuition batches and mentorship.",
+}
 
 export default function RootLayout({
   children,
