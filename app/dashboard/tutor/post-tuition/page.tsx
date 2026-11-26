@@ -17,32 +17,12 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select"
-import { authClient } from "@/lib/auth-client"
+import { useSession } from "@/lib/auth-client"
 import { cn } from "@/lib/utils"
+import { classLevels, modes, subjects } from "@/lib/types/tuition"
 
 const FREE_LIMIT = 2
 
-const subjects = [
-  "Math",
-  "Physics",
-  "Chemistry",
-  "Biology",
-  "English",
-  "Programming",
-  "IELTS",
-  "Other",
-]
-
-const classLevels = [
-  "Class 6-8",
-  "Class 9-10",
-  "HSC",
-  "HSC Addmission",
-  "University",
-  "Adult",
-]
-
-const modes = ["Online", "Offline"] as const
 type TuitionMode = (typeof modes)[number]
 
 type TuitionForm = {
@@ -81,33 +61,6 @@ const selectItemClass =
 
 const textareaClass =
   "min-h-40 w-full resize-y rounded-xl border-2 border-ink bg-white px-4 py-3 font-medium placeholder:text-ink/45 focus-visible:ring-2 focus-visible:ring-lilac focus-visible:ring-offset-2"
-
-async function apiFetch(path: string, options: RequestInit = {}) {
-  const baseUrl = process.env.NEXT_PUBLIC_API_URL?.replace(/\/+$/, "")
-
-  if (!baseUrl) {
-    throw new Error("NEXT_PUBLIC_API_URL is not configured")
-  }
-
-  const normalizedPath = path.replace(/^\/+/, "")
-  const url = `${baseUrl}/${normalizedPath}`
-
-  const headers = new Headers(options.headers)
-
-  if (
-    options.body &&
-    typeof options.body === "string" &&
-    !headers.has("Content-Type")
-  ) {
-    headers.set("Content-Type", "application/json")
-  }
-
-  return fetch(url, {
-    ...options,
-    headers,
-    credentials: "include",
-  })
-}
 
 async function uploadToImgBB(file: File) {
   const body = new FormData()
@@ -156,7 +109,7 @@ function Field({
 
 export default function PostTuitionPage() {
   const router = useRouter()
-  const { data: session } = authClient.useSession()
+  const { data: session } = useSession()
   const plan = (session?.user.plan as string | undefined) ?? "free"
 
   const [form, setForm] = useState<TuitionForm>(initialForm)
@@ -173,7 +126,9 @@ export default function PostTuitionPage() {
 
     async function loadTuitionCount() {
       try {
-        const res = await apiFetch("/tuitions")
+        const res = await fetch(
+          `${process.env.NEXT_PUBLIC_API_URL}/tuitions?tutorId=${session?.user.id}`
+        )
         if (!res.ok) throw new Error("Could not load tuition count")
         const list = await res.json()
         if (!cancelled) setPostCount(Array.isArray(list) ? list.length : 0)
@@ -186,7 +141,7 @@ export default function PostTuitionPage() {
     return () => {
       cancelled = true
     }
-  }, [])
+  })
 
   useEffect(() => {
     if (!preview) return
@@ -304,7 +259,7 @@ export default function PostTuitionPage() {
           tutorName: session?.user.name,
           tutorEmail: session?.user.email,
           approvalStatus: "pending",
-          isActive: false,
+          isActive: true,
         }),
       })
 
@@ -587,13 +542,15 @@ export default function PostTuitionPage() {
           <Button
             type="submit"
             disabled={isSubmitting || limitReached}
-            className="ml-auto h-12 rounded-full border-2 border-ink bg-lemon px-8 text-base font-extrabold text-ink shadow-hard transition hover:-translate-y-0.5 hover:shadow-[5px_5px_0_black] disabled:translate-y-0 disabled:opacity-60"
+            className={`${limitReached ? "bg-coral" : "bg-lemon"} ml-auto h-12 rounded-full border-2 border-ink px-8 text-base font-extrabold text-ink shadow-hard transition hover:-translate-y-0.5 hover:shadow-[5px_5px_0_black] disabled:translate-y-0 disabled:opacity-60`}
           >
             {isSubmitting ? (
               <>
                 <Loader2 className="mr-2 size-5 animate-spin" />
                 Uploading & submitting…
               </>
+            ) : limitReached ? (
+              "Limit reached"
             ) : (
               "Submit for approval"
             )}

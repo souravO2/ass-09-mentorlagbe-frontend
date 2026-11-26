@@ -16,7 +16,7 @@ export type Role = "student" | "tutor" | "admin"
 type NavItem = { href: string; label: string; icon: LucideIcon }
 
 const profile: NavItem = {
-  href: "/dashboard/profile",
+  href: "/profile",
   label: "Update Profile",
   icon: UserPen,
 }

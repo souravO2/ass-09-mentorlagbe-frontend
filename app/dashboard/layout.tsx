@@ -236,7 +236,7 @@ export default function DashboardLayout({
             <Link
               href="/"
               onClick={closeMobileDrawer}
-              className="items-center gap-2 rounded-full border-2 border-ink bg-white px-4 py-2 text-sm font-bold shadow-hard-sm flex"
+              className="flex items-center gap-2 rounded-full border-2 border-ink bg-white px-4 py-2 text-sm font-bold shadow-hard-sm"
             >
               <Home className="size-4" aria-hidden="true" />
               Home
