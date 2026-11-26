@@ -1,7 +1,7 @@
 "use client"
 
 import { useEffect, useState } from "react"
-import { useSession, authClient } from "@/lib/auth-client"
+import { useSession, authClient, signOut } from "@/lib/auth-client"
 import { toast } from "sonner"
 import { redirect } from "next/navigation"
 
@@ -18,6 +18,7 @@ import { ProfileImageUpload } from "@/components/profile/ProfileImageUpload"
 import { ProfileField } from "@/components/profile/ProfileField"
 import { ProfileConfirmDialog } from "@/components/profile/ConfirmDialog"
 import { cn } from "@/lib/utils"
+import { useRouter } from "next/navigation"
 
 type UserRole = "student" | "tutor"
 type UserPlan = "free" | "premium"
@@ -52,6 +53,20 @@ export default function ProfilePage() {
 }
 
 function ProfileForm({ user }: { user: ProfileUser }) {
+  const router = useRouter()
+
+  async function handleSignOut() {
+    try {
+      await signOut()
+
+      toast.success("Signed out")
+      router.replace("/")
+      router.refresh()
+    } catch {
+      toast.error("Could not sign out. Try again.")
+    }
+  }
+
   const [name, setName] = useState(user.name || "")
   const [phone, setPhone] = useState(user.phone || "")
   const [bio, setBio] = useState(user.bio || "")
@@ -167,6 +182,7 @@ function ProfileForm({ user }: { user: ProfileUser }) {
 
       // Refresh the session so the latest user data is available
       await authClient.getSession()
+      router.refresh()
     } catch (error) {
       console.error("Profile update error:", error)
 
@@ -212,6 +228,15 @@ function ProfileForm({ user }: { user: ProfileUser }) {
             >
               {plan} Plan
             </span>
+            <Button
+              type="button"
+              variant="outline"
+              disabled={isUploading || isSaving}
+              onClick={handleSignOut}
+              className="cursor-pointer rounded-full border-2 border-ink bg-coral px-4 py-4 font-extrabold text-ink shadow-[3px_3px_0_black] transition hover:-translate-y-0.5 hover:bg-red-600 hover:shadow-[4px_4px_0_black] active:translate-x-0.5 active:translate-y-0.5 active:shadow-none disabled:translate-y-0 disabled:opacity-50"
+            >
+              Sign Out
+            </Button>
           </div>
         </header>
 
