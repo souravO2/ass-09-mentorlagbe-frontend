@@ -2,8 +2,7 @@ import { Archivo, DM_Sans } from "next/font/google"
 import { Metadata } from "next"
 import "./globals.css"
 import { ThemeProvider } from "@/components/theme-provider"
-import Navbar from "@/components/Navbar/Navbar"
-import Footer from "@/components/shared/Footer"
+import SiteChrome from "@/components/shared/SiteChrome"
 
 const archivo = Archivo({
   subsets: ["latin"],
@@ -34,9 +33,7 @@ export default function RootLayout({
     >
       <body className="bg-paper font-sans text-ink">
         <ThemeProvider>
-          <Navbar />
-          {children}
-          <Footer />
+          <SiteChrome>{children}</SiteChrome>
         </ThemeProvider>
       </body>
     </html>

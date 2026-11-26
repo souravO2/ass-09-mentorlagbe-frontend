@@ -1,26 +1,26 @@
-import Link from "next/link";
-import { Mail, MapPin, Phone } from "lucide-react";
-import Logo from "../Navbar/Logo";
+import Link from "next/link"
+import { Mail, MapPin, Phone } from "lucide-react"
+import Logo from "../Navbar/Logo"
 
 // Replace these with your real contact details
 const contact = {
   email: "saifurrahmansourav93@gmail.com",
   phone: "+880 1521 702109",
   location: "Dhaka, Bangladesh",
-};
+}
 
 const exploreLinks = [
   { href: "/", label: "Home" },
   { href: "/tuitions", label: "Browse Tuitions" },
   { href: "/pricing", label: "Pricing" },
   { href: "/how-it-works", label: "How It Works" },
-];
+]
 
 const accountLinks = [
   { href: "/sign-in", label: "Sign In" },
   { href: "/sign-up", label: "Sign Up" },
   { href: "/profile", label: "Update Profile" },
-];
+]
 
 const socials = [
   {
@@ -38,23 +38,34 @@ const socials = [
     href: "https://linkedin.com/in/saifur-rahman-sourav",
     path: "M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z",
   },
-];
+]
 
-function LinkColumn({ title, links }: { title: string; links: { href: string; label: string }[] }) {
+function LinkColumn({
+  title,
+  links,
+}: {
+  title: string
+  links: { href: string; label: string }[]
+}) {
   return (
     <div>
-      <h3 className="mb-4 font-heading text-lg font-black text-lemon">{title}</h3>
+      <h3 className="mb-4 font-heading text-lg font-black text-lemon">
+        {title}
+      </h3>
       <ul className="flex flex-col gap-2.5">
         {links.map(({ href, label }) => (
           <li key={href}>
-            <Link href={href} className="text-white/80 transition-colors hover:text-lemon">
+            <Link
+              href={href}
+              className="text-white/80 transition-colors hover:text-lemon"
+            >
               {label}
             </Link>
           </li>
         ))}
       </ul>
     </div>
-  );
+  )
 }
 
 export default function Footer() {
@@ -72,7 +83,9 @@ export default function Footer() {
         <LinkColumn title="Account" links={accountLinks} />
 
         <div>
-          <h3 className="mb-4 font-heading text-lg font-black text-lemon">Contact</h3>
+          <h3 className="mb-4 font-heading text-lg font-black text-lemon">
+            Contact
+          </h3>
           <ul className="flex flex-col gap-3 text-white/80">
             <li className="flex items-center gap-3">
               <Mail className="size-4 shrink-0 text-lemon" aria-hidden="true" />
@@ -81,13 +94,22 @@ export default function Footer() {
               </a>
             </li>
             <li className="flex items-center gap-3">
-              <Phone className="size-4 shrink-0 text-lemon" aria-hidden="true" />
-              <a href={`tel:${contact.phone.replace(/\s/g, "")}`} className="hover:text-lemon">
+              <Phone
+                className="size-4 shrink-0 text-lemon"
+                aria-hidden="true"
+              />
+              <a
+                href={`tel:${contact.phone.replace(/\s/g, "")}`}
+                className="hover:text-lemon"
+              >
                 {contact.phone}
               </a>
             </li>
             <li className="flex items-center gap-3">
-              <MapPin className="size-4 shrink-0 text-lemon" aria-hidden="true" />
+              <MapPin
+                className="size-4 shrink-0 text-lemon"
+                aria-hidden="true"
+              />
               <span>{contact.location}</span>
             </li>
           </ul>
@@ -107,7 +129,12 @@ export default function Footer() {
                   aria-label={label}
                   className="grid size-10 place-items-center rounded-full border-2 border-white/40 transition-colors hover:border-lemon hover:bg-lemon hover:text-ink"
                 >
-                  <svg viewBox="0 0 24 24" fill="currentColor" className="size-4" aria-hidden="true">
+                  <svg
+                    viewBox="0 0 24 24"
+                    fill="currentColor"
+                    className="size-4"
+                    aria-hidden="true"
+                  >
                     <path d={path} />
                   </svg>
                 </a>
@@ -117,5 +144,5 @@ export default function Footer() {
         </div>
       </div>
     </footer>
-  );
+  )
 }

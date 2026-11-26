@@ -1,8 +1,8 @@
 type Step = {
-  title: string;
-  text: string;
-  color: string;
-};
+  title: string
+  text: string
+  color: string
+}
 
 const studentSteps: Step[] = [
   {
@@ -25,8 +25,7 @@ const studentSteps: Step[] = [
     text: "Tutors accept, sessions begin.",
     color: "bg-coral",
   },
-];
-
+]
 
 function StepGrid({ steps }: { steps: Step[] }) {
   return (
@@ -39,17 +38,15 @@ function StepGrid({ steps }: { steps: Step[] }) {
             {i + 1}
           </span>
 
-          <h3 className="font-heading text-lg font-black leading-tight">
+          <h3 className="font-heading text-lg leading-tight font-black">
             {step.title}
           </h3>
 
-          <p className="mt-1 text-sm leading-relaxed text-ink">
-            {step.text}
-          </p>
+          <p className="mt-1 text-sm leading-relaxed text-ink">{step.text}</p>
         </li>
       ))}
     </ol>
-  );
+  )
 }
 
 export default function HomeHow() {
@@ -65,6 +62,5 @@ export default function HomeHow() {
         </div>
       </section>
     </main>
-  );
+  )
 }
-

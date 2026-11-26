@@ -1,14 +1,14 @@
-import type { Metadata } from "next";
-import Link from "next/link";
+import type { Metadata } from "next"
+import Link from "next/link"
 
 export const metadata: Metadata = {
   title: "Page not found | MentorLagbe",
-};
+}
 
 export default function NotFound() {
   return (
     <main className="flex min-h-screen flex-col items-center justify-center gap-5 bg-lemon px-6 py-16 text-center">
-      <p className="font-heading text-[clamp(7rem,28vw,13rem)] font-black leading-[0.9] tracking-tight">
+      <p className="font-heading text-[clamp(7rem,28vw,13rem)] leading-[0.9] font-black tracking-tight">
         404
       </p>
       <h1 className="font-heading text-3xl font-black tracking-tight md:text-4xl">
@@ -32,5 +32,5 @@ export default function NotFound() {
         </Link>
       </div>
     </main>
-  );
+  )
 }

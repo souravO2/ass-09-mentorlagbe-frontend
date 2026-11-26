@@ -36,7 +36,7 @@ export default function HomePro() {
             </p>
 
             <button
-              className={`mt-4 cursor-pointer rounded-full border-2 border-black bg-paper px-6 py-3 text-sm font-bold text-black shadow-[2px_3px_0_#111] transition-all hover:translate-y-1px hover:shadow-none`}
+              className={`hover:translate-y-1px mt-4 cursor-pointer rounded-full border-2 border-black bg-paper px-6 py-3 text-sm font-bold text-black shadow-[2px_3px_0_#111] transition-all hover:shadow-none`}
               onClick={() => {
                 // Connect Stripe checkout here
               }}

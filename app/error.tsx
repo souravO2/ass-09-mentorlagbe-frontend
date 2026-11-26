@@ -1,29 +1,30 @@
-"use client";
+"use client"
 
-import { useEffect } from "react";
-import Link from "next/link";
+import { useEffect } from "react"
+import Link from "next/link"
 
 export default function Error({
   error,
   reset,
 }: {
-  error: Error & { digest?: string };
-  reset: () => void;
+  error: Error & { digest?: string }
+  reset: () => void
 }) {
   useEffect(() => {
-    console.error(error);
-  }, [error]);
+    console.error(error)
+  }, [error])
 
   return (
     <main className="flex min-h-screen flex-col items-center justify-center gap-5 bg-lilac px-6 py-16 text-center">
-      <p className="font-heading text-[clamp(5rem,18vw,9rem)] font-black leading-[0.9] tracking-tight">
+      <p className="font-heading text-[clamp(5rem,18vw,9rem)] leading-[0.9] font-black tracking-tight">
         Oops
       </p>
       <h1 className="font-heading text-3xl font-black tracking-tight md:text-4xl">
         Something went wrong
       </h1>
       <p className="max-w-md text-lg">
-        An unexpected error occurred. You can try again, or head back to the home page.
+        An unexpected error occurred. You can try again, or head back to the
+        home page.
       </p>
       {error.digest && (
         <p className="rounded-full border-2 border-ink bg-white px-3 py-1 text-xs font-bold">
@@ -46,5 +47,5 @@ export default function Error({
         </Link>
       </div>
     </main>
-  );
+  )
 }
