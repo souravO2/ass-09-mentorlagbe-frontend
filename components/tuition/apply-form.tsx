@@ -56,8 +56,9 @@ export default function ApplyForm({ tuition }: { tuition: Tuition }) {
     if (!user || role !== "student") return
     let cancelled = false
     // TODO : have to send the userId through middleware and check if the user has already applied for this tuition
+    // solved : used the userId from the session and tuitionId from the props to check if the user has already applied for this tuition by using query
     fetch(
-      `${process.env.NEXT_PUBLIC_API_URL}/applications/exists/${tuition._id}`,
+      `${process.env.NEXT_PUBLIC_API_URL}/applications?studentId=${user.id}&tuitionId=${tuition._id}`,
       { cache: "no-store" }
     )
       .then((res) => (res.ok ? res.json() : { applied: false }))
