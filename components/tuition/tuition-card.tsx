@@ -1,5 +1,5 @@
 import Link from "next/link"
-import { CalendarDays, MapPin } from "lucide-react"
+import { ArrowUpRight, CalendarDays, MapPin } from "lucide-react"
 import { Badge } from "@/components/ui/badge"
 import { buttonVariants } from "@/components/ui/button"
 import { cn } from "@/lib/utils"
@@ -96,10 +96,11 @@ export default function TuitionCard({
             href={`/tuitions/${t._id}`}
             className={cn(
               buttonVariants(),
-              "h-10 rounded-full border-2 border-ink bg-blue px-5 font-bold text-white shadow-hard-sm"
+              "group h-10 rounded-full border-2 border-ink bg-blue px-5 font-bold text-white shadow-hard transition-all duration-200 hover:translate-x-1 hover:-translate-y-1 hover:bg-blue hover:shadow-hard-sm active:translate-x-0 active:translate-y-0 active:shadow-none"
             )}
           >
             View Details
+            <ArrowUpRight className="ml-1 size-4 transition-transform duration-200 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
           </Link>
         </div>
       </div>
