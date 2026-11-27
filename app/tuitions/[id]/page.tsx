@@ -15,14 +15,30 @@ import InfoTile from "@/components/tuition/info-tile"
 import TutorCard from "@/components/tuition/tutor-card"
 import type { Tuition } from "@/lib/types/tuition"
 import { cn } from "@/lib/utils"
+import { getServerSession } from "@/lib/serverSession"
 
-async function getTuition(id: string): Promise<Tuition> {
+async function getTuition(id: string, role?: string): Promise<Tuition> {
   const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/tuitions/${id}`, {
     cache: "no-store",
   })
+
   if (res.status === 404) notFound()
-  if (!res.ok) throw new Error("Failed to load the tuition")
-  return res.json()
+
+  if (!res.ok) {
+    throw new Error("Failed to load the tuition")
+  }
+
+  const tuition: Tuition = await res.json()
+
+  // important to check if the tuition is approved and active before rendering the page
+  if (
+    role !== "admin" &&
+    (tuition.approvalStatus !== "approved" || !tuition.isActive)
+  ) {
+    notFound()
+  }
+
+  return tuition
 }
 
 export async function generateMetadata({
@@ -31,7 +47,12 @@ export async function generateMetadata({
   params: Promise<{ id: string }>
 }): Promise<Metadata> {
   const { id } = await params
-  const t = await getTuition(id)
+
+  const session = await getServerSession()
+  const role = session?.user?.role
+
+  const t = await getTuition(id, role)
+
   return {
     title: `${t.title} | MentorLagbe`,
     description: t.description.slice(0, 150),
@@ -46,7 +67,9 @@ export default async function TuitionDetailsPage({
   params: Promise<{ id: string }>
 }) {
   const { id } = await params
-  const t = await getTuition(id)
+  const session = await getServerSession()
+  const role = session?.user.role
+  const t = await getTuition(id, role)
 
   const postedOn = new Date(t.createdAt).toLocaleDateString("en-GB", {
     day: "numeric",
@@ -57,6 +80,11 @@ export default async function TuitionDetailsPage({
 
   return (
     <main className="mx-auto w-full max-w-6xl px-6 py-10">
+      {role === "admin" && (
+        <div className="mb-6 flex w-full items-center justify-center text-6xl font-bold text-red-600">
+          Admin View
+        </div>
+      )}
       <Link
         href="/tuitions"
         className="mb-6 inline-flex items-center gap-2 text-sm font-bold text-ink/65 transition hover:text-ink"
