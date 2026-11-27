@@ -44,7 +44,7 @@ export default function NavLinks({
           </Link>
         )
       })}
-      {session && (
+      {session?.data && (
         <Link
           href="/dashboard"
           onClick={onNavigate}

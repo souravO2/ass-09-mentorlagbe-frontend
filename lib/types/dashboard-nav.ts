@@ -29,11 +29,6 @@ export const dashboardNav: Record<Role, NavItem[]> = {
       label: "My Applications",
       icon: FileText,
     },
-    {
-      href: "/dashboard/student/saved",
-      label: "Saved Tuitions",
-      icon: Bookmark,
-    },
     profile,
   ],
   tutor: [
