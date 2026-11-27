@@ -28,6 +28,7 @@ import PageHeader from "@/components/tuition/page-header"
 import type { Application, ApplicationStatus } from "@/lib/types/application"
 import { cn } from "@/lib/utils"
 import StatusBadge from "./status-badge"
+import { useSearchParams } from "next/navigation"
 
 type Filter = "all" | ApplicationStatus
 
@@ -54,9 +55,20 @@ export default function MyApplications({
   initialApplications: Application[]
 }) {
   const [items, setItems] = useState(initialApplications)
-  const [filter, setFilter] = useState<Filter>("all")
   const [cancelTarget, setCancelTarget] = useState<Application | null>(null)
   const [cancelling, setCancelling] = useState(false)
+  const searchParams = useSearchParams()
+
+  const statusParam = searchParams.get("status")
+
+  const initialFilter: Filter =
+    statusParam === "pending" ||
+    statusParam === "accepted" ||
+    statusParam === "rejected"
+      ? statusParam
+      : "all"
+
+  const [filter, setFilter] = useState<Filter>(initialFilter)
 
   const counts = {
     all: items.length,

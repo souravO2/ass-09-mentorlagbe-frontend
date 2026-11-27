@@ -219,15 +219,16 @@ function ProfileForm({ user }: { user: ProfileUser }) {
             <span className="rounded-full border-2 border-black bg-[#FFDA3F] px-4 py-2 text-sm font-bold capitalize">
               {user.role || "Student"}
             </span>
-
-            <span
-              className={cn(
-                "rounded-full border-2 border-black px-4 py-2 text-sm font-bold capitalize",
-                plan === "premium" ? "bg-[#CBB8FF]" : "bg-gray-100"
-              )}
-            >
-              {plan} Plan
-            </span>
+            {user.role !== "admin" && (
+              <span
+                className={cn(
+                  "rounded-full border-2 border-black px-4 py-2 text-sm font-bold capitalize",
+                  plan === "premium" ? "bg-[#CBB8FF]" : "bg-gray-100"
+                )}
+              >
+                {plan} Plan
+              </span>
+            )}
             <Button
               type="button"
               variant="outline"
@@ -281,34 +282,35 @@ function ProfileForm({ user }: { user: ProfileUser }) {
                 placeholder="Tell us something about yourself..."
                 multiline
               />
+              {user.role !== "admin" && (
+                <div className="space-y-2">
+                  <label className="text-sm font-bold">Account type</label>
 
-              <div className="space-y-2">
-                <label className="text-sm font-bold">Account type</label>
+                  <Select
+                    value={role}
+                    onValueChange={(value) => setRole(value as UserRole)}
+                  >
+                    <SelectTrigger className="h-12 rounded-xl border-2 border-black bg-white font-semibold shadow-[3px_3px_0_black] focus:ring-[#CBB8FF]">
+                      <SelectValue placeholder="Select account type" />
+                    </SelectTrigger>
 
-                <Select
-                  value={role}
-                  onValueChange={(value) => setRole(value as UserRole)}
-                >
-                  <SelectTrigger className="h-12 rounded-xl border-2 border-black bg-white font-semibold shadow-[3px_3px_0_black] focus:ring-[#CBB8FF]">
-                    <SelectValue placeholder="Select account type" />
-                  </SelectTrigger>
-
-                  <SelectContent className="rounded-xl border-2 border-black bg-white p-1 shadow-[4px_4px_0_black]">
-                    <SelectItem
-                      value="student"
-                      className="cursor-pointer rounded-lg font-semibold focus:bg-[#CBB8FF] focus:text-black data-[state=checked]:bg-[#FFDA3F]"
-                    >
-                      Student
-                    </SelectItem>
-                    <SelectItem
-                      value="tutor"
-                      className="cursor-pointer rounded-lg font-semibold focus:bg-[#CBB8FF] focus:text-black data-[state=checked]:bg-[#FFDA3F]"
-                    >
-                      Tutor
-                    </SelectItem>
-                  </SelectContent>
-                </Select>
-              </div>
+                    <SelectContent className="rounded-xl border-2 border-black bg-white p-1 shadow-[4px_4px_0_black]">
+                      <SelectItem
+                        value="student"
+                        className="cursor-pointer rounded-lg font-semibold focus:bg-[#CBB8FF] focus:text-black data-[state=checked]:bg-[#FFDA3F]"
+                      >
+                        Student
+                      </SelectItem>
+                      <SelectItem
+                        value="tutor"
+                        className="cursor-pointer rounded-lg font-semibold focus:bg-[#CBB8FF] focus:text-black data-[state=checked]:bg-[#FFDA3F]"
+                      >
+                        Tutor
+                      </SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+              )}
 
               <div className="pt-2">
                 <Button
