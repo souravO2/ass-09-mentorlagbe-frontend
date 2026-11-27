@@ -313,7 +313,7 @@ export default function PostTuitionPage() {
             href="/pricing"
             className={cn(
               buttonVariants({ variant: "outline" }),
-              "h-11 shrink-0 rounded-xl border-2 border-ink bg-lemon px-5 font-extrabold shadow-hard hover:translate-x-[1px] hover:translate-y-[1px] hover:shadow-[2px_2px_0_black]"
+              "h-11 shrink-0 rounded-xl border-2 border-ink bg-lemon px-5 font-extrabold shadow-hard hover:translate-x-px hover:translate-y-px hover:shadow-[2px_2px_0_black]"
             )}
           >
             Upgrade to Pro

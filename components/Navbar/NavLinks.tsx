@@ -3,6 +3,7 @@
 import Link from "next/link"
 import { usePathname } from "next/navigation"
 import { cn } from "@/lib/utils"
+import { useSession } from "@/lib/auth-client"
 
 export const navItems = [
   { href: "/", label: "Home" },
@@ -19,6 +20,7 @@ export default function NavLinks({
   onNavigate?: () => void
 }) {
   const pathname = usePathname()
+  const session = useSession()
 
   return (
     <nav aria-label="Main" className={className}>
@@ -42,6 +44,21 @@ export default function NavLinks({
           </Link>
         )
       })}
+      {session && (
+        <Link
+          href="/dashboard"
+          onClick={onNavigate}
+          aria-current={pathname.startsWith("/dashboard") ? "page" : undefined}
+          className={cn(
+            "rounded-full border-2 px-4 py-2 text-[15px] font-bold transition-colors",
+            pathname.startsWith("/dashboard")
+              ? "border-ink bg-lemon"
+              : "border-transparent hover:bg-lemon/50"
+          )}
+        >
+          Dashboard
+        </Link>
+      )}
     </nav>
   )
 }

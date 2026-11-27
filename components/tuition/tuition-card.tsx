@@ -68,9 +68,9 @@ export default function TuitionCard({
         <h3 className="line-clamp-2 font-heading text-xl leading-tight font-black">
           {t.title}
         </h3>
-        <p className="text-sm font-medium text-ink-soft">By {t.tutorName}</p>
+        <p className="text-sm font-medium text-ink">By {t.tutorName}</p>
 
-        <ul className="flex flex-col gap-1.5 text-sm font-medium">
+        <ul className="flex flex-col gap-1.5 text-sm font-medium text-ink-soft">
           <li className="flex items-center gap-2">
             <CalendarDays className="size-4 shrink-0" aria-hidden="true" />
             {t.daysPerWeek} days per week
