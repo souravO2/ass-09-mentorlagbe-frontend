@@ -1,9 +1,8 @@
 "use client"
 
-import { useState } from "react"
+import { ChangeEvent, useState } from "react"
 import { toast } from "sonner"
-import { Loader2 } from "lucide-react"
-
+import { Loader2, Search } from "lucide-react"
 import type { Tuition } from "@/lib/types/tuition"
 import { Button } from "@/components/ui/button"
 import {
@@ -28,6 +27,8 @@ import { Badge } from "@/components/ui/badge"
 import { cn } from "@/lib/utils"
 import PageHeader from "@/components/tuition/page-header"
 import Link from "next/link"
+import { Input } from "@/components/ui/input"
+import { inputClass } from "@/lib/styles/form-styles"
 
 type ApprovalStatus = Tuition["approvalStatus"]
 type Filter = "all" | ApprovalStatus
@@ -70,6 +71,7 @@ export default function AdminTuitionApprovals({
   const [items, setItems] = useState(initialApplications)
   const [filter, setFilter] = useState<Filter>("all")
   const [busyId, setBusyId] = useState<string | null>(null)
+  const [search, setSearch] = useState("")
 
   const [actionTarget, setActionTarget] = useState<{
     tuition: Tuition
@@ -83,8 +85,21 @@ export default function AdminTuitionApprovals({
     rejected: items.filter((t) => t.approvalStatus === "rejected").length,
   }
 
-  const visible =
-    filter === "all" ? items : items.filter((t) => t.approvalStatus === filter)
+  const term = search.trim().toLowerCase()
+
+  const visible = items.filter(
+    (t) =>
+      (filter === "all" || t.approvalStatus === filter) &&
+      (!term ||
+        t.title.toLowerCase().includes(term) ||
+        t.subject.toLowerCase().includes(term) ||
+        (t.tutorName ?? "").toLowerCase().includes(term) ||
+        t.tutorEmail.toLowerCase().includes(term))
+  )
+
+  function handleSearchChange(event: ChangeEvent<HTMLInputElement>) {
+    setSearch(event.target.value)
+  }
 
   function requestApproval(
     tuition: Tuition,
@@ -174,42 +189,65 @@ export default function AdminTuitionApprovals({
         </Badge>
       </header>
 
-      {/* Status filters */}
-      <div
-        role="group"
-        aria-label="Filter tuition approvals"
-        className="flex flex-wrap gap-2"
-      >
-        {filters.map(({ value, label }) => (
-          <button
-            key={value}
-            type="button"
-            onClick={() => setFilter(value)}
-            aria-pressed={filter === value}
-            className={cn(
-              "flex items-center gap-2 rounded-full border-2 border-ink px-4 py-2 text-sm font-bold transition-colors",
-              filter === value
-                ? "bg-lemon shadow-hard-sm"
-                : "bg-white hover:bg-lemon/50"
-            )}
-          >
-            {label}
+      {/* Status filters + search */}
+      <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
+        <div
+          role="group"
+          aria-label="Filter tuition approvals"
+          className="flex flex-wrap gap-2"
+        >
+          {filters.map(({ value, label }) => (
+            <button
+              key={value}
+              type="button"
+              onClick={() => setFilter(value)}
+              aria-pressed={filter === value}
+              className={cn(
+                "flex items-center gap-2 rounded-full border-2 border-ink px-4 py-2 text-sm font-bold transition-colors",
+                filter === value
+                  ? "bg-lemon shadow-hard-sm"
+                  : "bg-white hover:bg-lemon/50"
+              )}
+            >
+              {label}
 
-            <span className="grid min-w-6 place-items-center rounded-full border-2 border-ink bg-white px-1 text-xs font-extrabold">
-              {counts[value]}
-            </span>
-          </button>
-        ))}
+              <span className="grid min-w-6 place-items-center rounded-full border-2 border-ink bg-white px-1 text-xs font-extrabold">
+                {counts[value]}
+              </span>
+            </button>
+          ))}
+        </div>
+
+        <div className="relative w-full lg:max-w-xs">
+          <Search
+            className="pointer-events-none absolute top-1/2 left-4 size-4 -translate-y-1/2 text-ink/45"
+            aria-hidden="true"
+          />
+          <Input
+            type="search"
+            aria-label="Search tuitions"
+            value={search}
+            onChange={handleSearchChange}
+            placeholder="Search title, subject or tutor"
+            className={cn(inputClass, "pl-11")}
+          />
+        </div>
       </div>
 
       {visible.length === 0 ? (
         <div className="rounded-3xl border-2 border-ink bg-white p-10 text-center shadow-hard">
           <h2 className="font-heading text-xl font-black">
-            No {filter} tuitions
+            {term
+              ? "No matching tuitions"
+              : filter === "all"
+                ? "No tuitions yet"
+                : `No ${filter} tuitions`}
           </h2>
 
           <p className="mt-2 text-sm text-ink-soft">
-            There are no tuition posts in this category right now.
+            {term
+              ? "Try a different search or status filter."
+              : "There are no tuition posts in this category right now."}
           </p>
         </div>
       ) : (
@@ -272,11 +310,13 @@ export default function AdminTuitionApprovals({
                         </div>
                       </TableCell>
 
-                      <TableCell className="flex min-w-32 flex-col">
-                        <span className="text-ink">{t.subject}</span>
-                        <span className="text-sm text-ink-soft">
-                          {t.classLevel}
-                        </span>
+                      <TableCell className="min-w-32">
+                        <div className="flex flex-col">
+                          <span className="text-ink">{t.subject}</span>
+                          <span className="text-sm text-ink-soft">
+                            {t.classLevel}
+                          </span>
+                        </div>
                       </TableCell>
 
                       <TableCell className="font-medium">
@@ -298,8 +338,6 @@ export default function AdminTuitionApprovals({
                             >
                               {busyId === t._id ? (
                                 <Loader2 className="size-4 animate-spin" />
-                              ) : t.approvalStatus === "rejected" ? (
-                                "Approve"
                               ) : (
                                 "Approve"
                               )}

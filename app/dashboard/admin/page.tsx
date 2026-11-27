@@ -39,7 +39,7 @@ export default async function AdminOverviewPage() {
           value: data.tutors,
           icon: GraduationCap,
           color: "sky",
-          href: "/dashboard/admin/users",
+          href: "/dashboard/admin/users?status=tutor",
         },
         {
           label: "Pending vs approved tuitions",

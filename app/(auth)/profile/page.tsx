@@ -170,7 +170,9 @@ function ProfileForm({ user }: { user: ProfileUser }) {
         image: imageUrl,
         phone: phone.trim(),
         bio: bio.trim(),
-        role,
+
+        // Only student/tutor can update their account type here.
+        ...(user.role !== "admin" && { role }),
       })
 
       if (error) {
