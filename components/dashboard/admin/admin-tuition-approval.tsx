@@ -252,10 +252,10 @@ export default function AdminTuitionApprovals({
                       key={t._id}
                       className="border-b-2 border-ink last:border-b-0"
                     >
-                      <TableCell className="min-w-56 py-5 font-bold">
+                      <TableCell className="py-5 font-bold whitespace-normal">
                         <Link
                           href={`/tuitions/${t._id}`}
-                          className="hover:underline"
+                          className="wrap:anywhere block w-full whitespace-normal hover:underline"
                         >
                           {t.title}
                         </Link>

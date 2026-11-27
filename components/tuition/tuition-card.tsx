@@ -4,6 +4,7 @@ import { Badge } from "@/components/ui/badge"
 import { buttonVariants } from "@/components/ui/button"
 import { cn } from "@/lib/utils"
 import { Tuition } from "@/lib/types/tuition"
+import Image from "next/image"
 
 export type TuitionCardData = Pick<
   Tuition,
@@ -39,10 +40,13 @@ export default function TuitionCard({
     >
       <div className="aspect-video overflow-hidden border-b-2 border-ink bg-lilac/40">
         {t.bannerImage && (
-          // eslint-disable-next-line @next/next/no-img-element
-          <img
+          <Image
             src={t.bannerImage}
-            alt=""
+            alt={t.title}
+            width={500}
+            height={300}
+            quality={75}
+            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
             loading="lazy"
             className="size-full object-cover"
           />

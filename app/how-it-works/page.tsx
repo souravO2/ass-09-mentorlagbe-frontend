@@ -79,7 +79,7 @@ function StepGrid({ steps }: { steps: Step[] }) {
 export default function HowItWorksPage() {
   return (
     <main>
-      <section className="mx-auto max-w-6xl px-6 pt-16 pb-6">
+      <section className="mx-auto max-w-7xl px-6 pt-16 pb-6">
         <span className="mb-5 inline-block rounded-full border-2 border-ink bg-lemon px-3 py-1 text-sm font-extrabold">
           How it works
         </span>

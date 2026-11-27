@@ -16,6 +16,7 @@ import TutorCard from "@/components/tuition/tutor-card"
 import type { Tuition } from "@/lib/types/tuition"
 import { cn } from "@/lib/utils"
 import { getServerSession } from "@/lib/serverSession"
+import Image from "next/image"
 
 async function getTuition(id: string, role?: string): Promise<Tuition> {
   const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/tuitions/${id}`, {
@@ -97,10 +98,13 @@ export default async function TuitionDetailsPage({
         <article className="flex min-w-0 flex-col gap-8">
           <div className="aspect-video overflow-hidden rounded-3xl border-2 border-ink bg-lilac/40 shadow-hard">
             {t.bannerImage && (
-              // eslint-disable-next-line @next/next/no-img-element
-              <img
+              <Image
                 src={t.bannerImage}
                 alt={`Banner for ${t.title}`}
+                width={1200}
+                height={675}
+                quality={75}
+                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                 className="size-full object-cover"
               />
             )}

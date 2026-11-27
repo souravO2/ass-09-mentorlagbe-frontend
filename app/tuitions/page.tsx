@@ -48,7 +48,7 @@ export default async function TuitionsPage({
   const totalPages = Math.max(1, Math.ceil(total / PAGE_SIZE))
 
   return (
-    <main className="mx-auto w-full max-w-6xl px-6 py-12">
+    <main className="mx-auto w-full max-w-7xl px-6 py-12">
       <PageHeader
         eyebrow="Browse"
         title="Browse"

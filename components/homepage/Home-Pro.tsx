@@ -4,7 +4,7 @@ import { Card, CardContent } from "@/components/ui/card"
 
 export default function HomePro() {
   return (
-    <div className="mx-auto max-w-7xl px-6 py-12 md:py-14">
+    <div className="mx-auto max-w-6xl px-6 py-12 md:py-14">
       <section className="grid w-full grid-cols-1 gap-4 md:grid-cols-2">
         {/* Tutor Pro */}
         <Card className="rounded-xl border-2 border-black bg-[#4038F5] shadow-[3px_3px_0px_#111]">

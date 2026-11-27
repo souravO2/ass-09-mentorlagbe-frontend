@@ -15,7 +15,7 @@ export default function Navbar() {
 
   return (
     <header className="sticky top-0 z-50 px-4 pt-4">
-      <div className="mx-auto flex max-w-6xl items-center justify-between gap-3 rounded-full border-2 border-ink bg-white py-2.5 pr-3 pl-5 shadow-hard">
+      <div className="mx-auto flex max-w-7xl items-center justify-between gap-3 rounded-full border-2 border-ink bg-white py-2.5 pr-3 pl-5 shadow-hard">
         <Logo />
 
         {/* Desktop navigation */}
