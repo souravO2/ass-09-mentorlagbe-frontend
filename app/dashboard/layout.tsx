@@ -5,12 +5,12 @@ import Link from "next/link"
 import { usePathname, useRouter } from "next/navigation"
 import { toast } from "sonner"
 import { Home, LogOut, Menu, PanelLeftClose, PanelLeftOpen } from "lucide-react"
-
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { authClient } from "@/lib/auth-client"
 import { cn } from "@/lib/utils"
 import { dashboardNav, Role } from "@/lib/types/dashboard-nav"
 import { RoleBadge } from "@/components/Navbar/ProfileMenu"
+import NavLinks from "@/components/Navbar/NavLinks"
 
 const roles: Role[] = ["student", "tutor", "admin"]
 
@@ -230,6 +230,10 @@ export default function DashboardLayout({
               />
             )}
           </button>
+
+          <span className="hidden lg:block">
+            <NavLinks />
+          </span>
 
           {/* Header actions */}
           <div className="flex items-center gap-3">
