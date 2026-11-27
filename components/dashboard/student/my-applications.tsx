@@ -174,12 +174,12 @@ export default function MyApplications({
             <Table>
               <TableHeader>
                 <TableRow>
-                  <TableHead>Tuition</TableHead>
-                  <TableHead>Tutor</TableHead>
-                  <TableHead>Fee</TableHead>
-                  <TableHead>Applied</TableHead>
-                  <TableHead>Status</TableHead>
-                  <TableHead className="text-right">Action</TableHead>
+                  <TableHead className="font-extrabold">Tuition</TableHead>
+                  <TableHead className="font-extrabold">Tutor</TableHead>
+                  <TableHead className="font-extrabold">Fee</TableHead>
+                  <TableHead className="font-extrabold">Applied</TableHead>
+                  <TableHead className="font-extrabold">Status</TableHead>
+                  <TableHead className="text-right font-bold">Action</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
