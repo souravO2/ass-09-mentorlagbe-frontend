@@ -8,7 +8,7 @@ import { useSession } from "@/lib/auth-client"
 export const navItems = [
   { href: "/", label: "Home" },
   { href: "/tuitions", label: "Browse Tuitions" },
-  { href: "/pricing", label: "Pricing" },
+  { href: "/checkout", label: "Pricing" },
   { href: "/how-it-works", label: "How It Works" },
 ]
 

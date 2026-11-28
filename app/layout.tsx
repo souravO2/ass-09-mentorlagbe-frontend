@@ -14,7 +14,7 @@ const dmSans = DM_Sans({ subsets: ["latin"], variable: "--font-dm-sans" })
 export const metadata: Metadata = {
   title: {
     default: "MentorLagbe",
-    template: "MentorLagbe | %s",
+    template: "%s | MentorLagbe",
   },
   description:
     "MentorLagbe is a platform that connects students with verified tutors for tuition batches and mentorship.",

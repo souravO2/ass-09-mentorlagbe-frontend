@@ -21,7 +21,7 @@ import { cn } from "@/lib/utils"
 import { useRouter } from "next/navigation"
 
 type UserRole = "student" | "tutor"
-type UserPlan = "free" | "premium"
+type UserPlan = "free" | "pro"
 
 type ProfileUser = {
   id: string
@@ -75,7 +75,7 @@ function ProfileForm({ user }: { user: ProfileUser }) {
     user.role === "tutor" ? "tutor" : "student"
   )
 
-  const plan: UserPlan = user.plan === "premium" ? "premium" : "free"
+  const plan: UserPlan = user.plan === "pro" ? "pro" : "free"
 
   const [imagePreview, setImagePreview] = useState(user.image ?? "")
   const [imageUrl, setImageUrl] = useState<string | null>(user.image ?? null)
@@ -225,7 +225,7 @@ function ProfileForm({ user }: { user: ProfileUser }) {
               <span
                 className={cn(
                   "rounded-full border-2 border-black px-4 py-2 text-sm font-bold capitalize",
-                  plan === "premium" ? "bg-[#CBB8FF]" : "bg-gray-100"
+                  plan === "pro" ? "bg-[#CBB8FF]" : "bg-gray-100"
                 )}
               >
                 {plan} Plan

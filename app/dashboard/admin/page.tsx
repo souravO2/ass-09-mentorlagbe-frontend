@@ -18,7 +18,7 @@ export default async function AdminOverviewPage() {
     tutors: result.tutors,
     pending: result.pending,
     approved: result.approved,
-    revenue: 0,
+    revenue: result.revenue,
   }
 
   return (

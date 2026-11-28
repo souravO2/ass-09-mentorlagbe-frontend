@@ -9,7 +9,7 @@ export function planStat(plan: "free" | "pro"): OverviewStat {
     value: plan === "pro" ? "Pro" : "Free",
     icon: Crown,
     color: plan === "pro" ? "mint" : "lemon",
-    href: plan === "pro" ? undefined : "/pricing",
+    href: plan === "pro" ? undefined : "/checkout",
     hint: plan === "pro" ? undefined : "Upgrade to Pro",
   }
 }

@@ -7,7 +7,7 @@ export default function Loading() {
       <span className="sr-only">Loading</span>
 
       {/* Hero */}
-      <section className="mx-auto grid max-w-6xl items-center gap-12 px-6 py-16 lg:grid-cols-2">
+      <section className="mx-auto grid max-w-7xl items-center gap-12 px-6 py-16 lg:grid-cols-2">
         <div className="flex flex-col gap-5">
           <Bone className="h-8 w-48 rounded-full" />
           <Bone className="h-16 w-full" />
@@ -19,7 +19,7 @@ export default function Loading() {
       </section>
 
       {/* Featured tuitions */}
-      <section className="mx-auto max-w-6xl px-6 py-12">
+      <section className="mx-auto max-w-7xl px-6 py-12">
         <Bone className="mb-8 h-10 w-72 max-w-full" />
         <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
           {Array.from({ length: 6 }).map((_, i) => (

@@ -80,7 +80,7 @@ export default async function TuitionDetailsPage({
   })
 
   return (
-    <main className="mx-auto w-full max-w-6xl px-6 py-10">
+    <main className="mx-auto w-full max-w-7xl px-6 py-10">
       {role === "admin" && (
         <div className="mb-6 flex w-full items-center justify-center text-4xl font-bold text-red-600">
           Admin View

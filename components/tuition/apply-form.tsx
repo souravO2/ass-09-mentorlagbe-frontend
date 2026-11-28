@@ -11,8 +11,26 @@ import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
 import { authClient } from "@/lib/auth-client"
 import { inputClass, textareaClass } from "@/lib/styles/form-styles"
+import type { Tuition } from "@/lib/types/tuition"
 import { cn } from "@/lib/utils"
-import { Tuition } from "@/lib/types/tuition"
+
+const API_URL = process.env.NEXT_PUBLIC_API_URL
+const FREE_APPLY_LIMIT = 5
+const PHONE_PATTERN = /^(?:\+?88)?01[3-9]\d{8}$/
+const NOTE_MAX_LENGTH = 500
+
+const emptyForm = {
+  phone: "",
+  preferredSchedule: "",
+  studentNote: "",
+}
+
+type FormState = typeof emptyForm
+type FormErrors = Partial<Record<keyof FormState, string>>
+type LimitStatus = "loading" | "ready" | "error"
+type ApplicationStatusResponse = { applied: boolean; count: number }
+
+const normalizePhone = (value: string) => value.replace(/[\s-]/g, "")
 
 function Panel({ children }: { children: ReactNode }) {
   return (
@@ -22,53 +40,154 @@ function Panel({ children }: { children: ReactNode }) {
   )
 }
 
-function FieldError({ message }: { message?: string }) {
-  if (!message) return null
+function Field({
+  id,
+  label,
+  optional,
+  error,
+  children,
+}: {
+  id: string
+  label: string
+  optional?: boolean
+  error?: string
+  children: ReactNode
+}) {
   return (
-    <p role="alert" className="text-sm font-bold text-[#B3261E]">
-      {message}
+    <div className="flex flex-col gap-2">
+      <Label htmlFor={id} className="text-sm font-extrabold tracking-tight">
+        {label}
+        {optional && (
+          <span className="ml-1 font-medium text-ink-soft">(optional)</span>
+        )}
+      </Label>
+      {children}
+      {error && (
+        <p role="alert" className="text-sm font-bold text-[#B3261E]">
+          {error}
+        </p>
+      )}
+    </div>
+  )
+}
+
+function LimitNote({
+  status,
+  count,
+  onRetry,
+}: {
+  status: LimitStatus
+  count: number
+  onRetry: () => void
+}) {
+  if (status === "loading") {
+    return (
+      <p aria-live="polite" className="text-sm font-bold text-ink-soft">
+        Checking your application limit…
+      </p>
+    )
+  }
+
+  if (status === "error") {
+    return (
+      <p
+        role="alert"
+        className="flex flex-wrap items-center gap-x-2 text-sm font-bold text-[#B3261E]"
+      >
+        Could not check your application limit.
+        <button type="button" onClick={onRetry} className="text-ink underline">
+          Try again
+        </button>
+      </p>
+    )
+  }
+
+  if (count >= FREE_APPLY_LIMIT) {
+    return (
+      <p className="flex flex-col items-center text-sm font-bold text-[#B3261E]">
+        You have used all {FREE_APPLY_LIMIT} free applications.{" "}
+        <span>
+          <Link href="/checkout" className="text-lg text-ink underline">
+            Upgrade to Pro
+          </Link>{" "}
+          to apply to more.
+        </span>
+      </p>
+    )
+  }
+
+  return (
+    <p className="text-sm font-bold text-ink-soft">
+      Free plan: {count} of {FREE_APPLY_LIMIT} applications used
     </p>
   )
 }
 
 export default function ApplyForm({ tuition }: { tuition: Tuition }) {
   const { data: session, isPending } = authClient.useSession()
+
   const user = session?.user
   const role = user?.role as string | undefined
+  const isPro = user?.plan === "pro"
+  const studentId = role === "student" ? user?.id : undefined
 
-  const initialForm = {
-    phone: user?.phone || "",
-    preferredSchedule: "",
-    studentNote: "",
-  }
-
-  type FormState = typeof initialForm
-
-  const [form, setForm] = useState<FormState>(initialForm)
-  const [errors, setErrors] = useState<
-    Partial<Record<keyof FormState, string>>
-  >({})
+  const [form, setForm] = useState<FormState>(emptyForm)
+  const [errors, setErrors] = useState<FormErrors>({})
   const [isSubmitting, setIsSubmitting] = useState(false)
+
   const [applied, setApplied] = useState(false)
+  const [applicationCount, setApplicationCount] = useState(0)
+  const [limitStatus, setLimitStatus] = useState<LimitStatus>("loading")
+  const [retryKey, setRetryKey] = useState(0)
 
-  // Has this student already applied?
+  const limitReached =
+    !isPro && limitStatus === "ready" && applicationCount >= FREE_APPLY_LIMIT
+
+  // Free students must have a confirmed count before they can apply
+  const limitUnconfirmed = !isPro && limitStatus !== "ready"
+
+  const cannotApply = isSubmitting || limitUnconfirmed || limitReached
+
+  // Has this student applied here already, and how many applications do they have?
   useEffect(() => {
-    if (!user || role !== "student") return
-    let cancelled = false
-    // TODO : have to send the userId through middleware and check if the user has already applied for this tuition
-    // solved : used the userId from the session and tuitionId from the props to check if the user has already applied for this tuition by using query
-    fetch(
-      `${process.env.NEXT_PUBLIC_API_URL}/applications?studentId=${user.id}&tuitionId=${tuition._id}`,
-      { cache: "no-store" }
-    )
-      .then((res) => (res.ok ? res.json() : { applied: false }))
-      .then((data) => !cancelled && setApplied(Boolean(data.applied)))
-      .catch(() => {})
+    if (!studentId) return
 
-    return () => {
-      cancelled = true
+    const controller = new AbortController()
+
+    const loadStatus = async () => {
+      try {
+        const params = new URLSearchParams({
+          studentId,
+          tuitionId: tuition._id,
+        })
+
+        const res = await fetch(`${API_URL}/applications?${params}`, {
+          cache: "no-store",
+          signal: controller.signal,
+        })
+        if (!res.ok) throw new Error("Could not load application status")
+
+        const data: ApplicationStatusResponse = await res.json()
+        if (!Number.isInteger(data.count) || data.count < 0) {
+          throw new Error("Invalid application count")
+        }
+
+        setApplied(Boolean(data.applied))
+        setApplicationCount(data.count)
+        setLimitStatus("ready")
+      } catch {
+        if (!controller.signal.aborted) setLimitStatus("error")
+      }
     }
-  }, [user, role, tuition._id])
+
+    loadStatus()
+    return () => controller.abort()
+  }, [studentId, tuition._id, retryKey])
+
+  function retryLimitCheck() {
+    setLimitStatus("loading")
+    setRetryKey((key) => key + 1)
+  }
 
   function handleChange(
     event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -79,17 +198,17 @@ export default function ApplyForm({ tuition }: { tuition: Tuition }) {
   }
 
   function validateForm() {
-    const next: typeof errors = {}
+    const next: FormErrors = {}
 
-    const phone = form.phone.replace(/[\s-]/g, "")
-    if (!/^(?:\+?88)?01[3-9]\d{8}$/.test(phone))
+    if (!PHONE_PATTERN.test(normalizePhone(form.phone))) {
       next.phone = "Enter a valid Bangladeshi phone number"
-
-    if (form.preferredSchedule.trim().length < 3)
+    }
+    if (form.preferredSchedule.trim().length < 3) {
       next.preferredSchedule = "Tell us when you are free, e.g. Sat and Mon 5pm"
-
-    if (form.studentNote.length > 500)
-      next.studentNote = "Keep the note under 500 characters"
+    }
+    if (form.studentNote.length > NOTE_MAX_LENGTH) {
+      next.studentNote = `Keep the note under ${NOTE_MAX_LENGTH} characters`
+    }
 
     setErrors(next)
     return Object.keys(next).length === 0
@@ -97,52 +216,56 @@ export default function ApplyForm({ tuition }: { tuition: Tuition }) {
 
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault()
-    if (isSubmitting) return
+    if (cannotApply) return
 
     if (!validateForm()) {
       toast.error("Please check the form fields")
       return
     }
 
-    console.log("Submitting application:", form)
-
     setIsSubmitting(true)
     try {
-      const res = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/applications`,
-        {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            tuitionId: tuition._id,
-            tutorId: tuition.tutorId,
-            tuitionTitle: tuition.title,
-            tutorName: tuition.tutorName,
-            tutorEmail: tuition.tutorEmail,
-            subject: tuition.subject,
-            monthlyFee: tuition.monthlyFee,
-            studentId: user?.id,
-            studentName: user?.name,
-            studentEmail: user?.email,
-            studentPhone: form.phone.replace(/[\s-]/g, ""),
-            preferredSchedule: form.preferredSchedule.trim(),
-            studentNote: form.studentNote.trim(),
-            status: "pending",
-          }),
-        }
-      )
+      const res = await fetch(`${API_URL}/applications`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          tuitionId: tuition._id,
+          tutorId: tuition.tutorId,
+          tuitionTitle: tuition.title,
+          tutorName: tuition.tutorName,
+          tutorEmail: tuition.tutorEmail,
+          subject: tuition.subject,
+          monthlyFee: tuition.monthlyFee,
+          studentId: user?.id,
+          studentName: user?.name,
+          studentEmail: user?.email,
+          studentPhone: normalizePhone(form.phone),
+          preferredSchedule: form.preferredSchedule.trim(),
+          studentNote: form.studentNote.trim(),
+          status: "pending",
+        }),
+      })
 
       if (res.status === 409) {
         setApplied(true)
         toast.error("You have already applied to this tuition")
         return
       }
+
+      if (res.status === 403) {
+        setApplicationCount(FREE_APPLY_LIMIT)
+        setLimitStatus("ready")
+        toast.error("You have reached the free plan limit")
+        return
+      }
+
       if (!res.ok) {
         const err = await res.json().catch(() => ({}))
         throw new Error(err.message ?? "Could not send your application")
       }
 
       setApplied(true)
+      setApplicationCount((count) => count + 1)
       toast.success("Application sent")
     } catch (error) {
       toast.error(
@@ -153,7 +276,7 @@ export default function ApplyForm({ tuition }: { tuition: Tuition }) {
     }
   }
 
-  // 1. Session still loading
+  // 1. Session loading
   if (isPending) {
     return (
       <div
@@ -197,18 +320,11 @@ export default function ApplyForm({ tuition }: { tuition: Tuition }) {
           Only student accounts can apply for a tuition. You are signed in as{" "}
           {role === "admin" ? "an admin" : "a tutor"}.
         </p>
-        <Button
-          type="button"
-          disabled
-          className="h-12 rounded-full border-2 border-ink bg-lemon font-extrabold text-ink opacity-60"
-        >
-          Apply Now
-        </Button>
       </Panel>
     )
   }
 
-  // 4. Already applied
+  // 4. Already applied to this tuition
   if (applied) {
     return (
       <Panel>
@@ -233,7 +349,13 @@ export default function ApplyForm({ tuition }: { tuition: Tuition }) {
     )
   }
 
-  // 5. The form
+  // 5. Application form
+  let buttonLabel = "Apply Now"
+  if (!isPro && limitStatus === "loading") buttonLabel = "Checking limit…"
+  else if (!isPro && limitStatus === "error")
+    buttonLabel = "Could not check limit"
+  else if (limitReached) buttonLabel = "Limit reached"
+
   return (
     <form
       onSubmit={handleSubmit}
@@ -248,33 +370,25 @@ export default function ApplyForm({ tuition }: { tuition: Tuition }) {
         <p className="text-ink-soft">{user.email}</p>
       </div>
 
-      <div className="flex flex-col gap-2">
-        <Label
-          htmlFor="phone"
-          className="text-sm font-extrabold tracking-tight"
-        >
-          Phone
-        </Label>
+      <Field id="phone" label="Phone" error={errors.phone}>
         <Input
           id="phone"
           name="phone"
           type="tel"
           inputMode="tel"
-          value={form.phone}
+          autoComplete="tel"
+          value={form.phone || (user?.phone as string) || ""}
           onChange={handleChange}
           placeholder="01XXXXXXXXX"
           className={inputClass}
         />
-        <FieldError message={errors.phone} />
-      </div>
+      </Field>
 
-      <div className="flex flex-col gap-2">
-        <Label
-          htmlFor="preferredSchedule"
-          className="text-sm font-extrabold tracking-tight"
-        >
-          Preferred schedule
-        </Label>
+      <Field
+        id="preferredSchedule"
+        label="Preferred schedule"
+        error={errors.preferredSchedule}
+      >
         <Input
           id="preferredSchedule"
           name="preferredSchedule"
@@ -283,17 +397,14 @@ export default function ApplyForm({ tuition }: { tuition: Tuition }) {
           placeholder="e.g. Sat, Mon, Wed 5-6pm"
           className={inputClass}
         />
-        <FieldError message={errors.preferredSchedule} />
-      </div>
+      </Field>
 
-      <div className="flex flex-col gap-2">
-        <Label
-          htmlFor="studentNote"
-          className="text-sm font-extrabold tracking-tight"
-        >
-          Learning note{" "}
-          <span className="font-medium text-ink-soft">(optional)</span>
-        </Label>
+      <Field
+        id="studentNote"
+        label="Learning note"
+        optional
+        error={errors.studentNote}
+      >
         <Textarea
           id="studentNote"
           name="studentNote"
@@ -303,12 +414,19 @@ export default function ApplyForm({ tuition }: { tuition: Tuition }) {
           placeholder="What do you want to improve?"
           className={cn(textareaClass, "min-h-28")}
         />
-        <FieldError message={errors.studentNote} />
-      </div>
+      </Field>
+
+      {!isPro && (
+        <LimitNote
+          status={limitStatus}
+          count={applicationCount}
+          onRetry={retryLimitCheck}
+        />
+      )}
 
       <Button
         type="submit"
-        disabled={isSubmitting}
+        disabled={cannotApply}
         className="h-12 rounded-full border-2 border-ink bg-lemon text-base font-extrabold text-ink shadow-hard transition hover:-translate-y-0.5 hover:shadow-[5px_5px_0_black] disabled:translate-y-0 disabled:opacity-60"
       >
         {isSubmitting ? (
@@ -317,7 +435,7 @@ export default function ApplyForm({ tuition }: { tuition: Tuition }) {
             Sending…
           </>
         ) : (
-          "Apply Now"
+          buttonLabel
         )}
       </Button>
     </form>

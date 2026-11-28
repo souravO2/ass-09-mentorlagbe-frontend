@@ -5,7 +5,7 @@ export default function Loading() {
     <main
       role="status"
       aria-label="Loading"
-      className="mx-auto w-full max-w-6xl px-6 py-10"
+      className="mx-auto w-full max-w-7xl px-6 py-10"
     >
       <span className="sr-only">Loading</span>
       <Bone className="mb-6 h-5 w-40" />
