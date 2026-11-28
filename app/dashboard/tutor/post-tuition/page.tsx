@@ -20,6 +20,7 @@ import {
 import { useSession } from "@/lib/auth-client"
 import { cn } from "@/lib/utils"
 import { classLevels, modes, subjects } from "@/lib/types/tuition"
+import Image from "next/image"
 
 const FREE_LIMIT = 2
 
@@ -500,12 +501,15 @@ export default function PostTuitionPage() {
                 )}
               >
                 {preview ? (
-                  // eslint-disable-next-line @next/next/no-img-element
-                  <img
-                    src={preview}
-                    alt="Tuition cover preview"
-                    className="max-h-72 w-full rounded-xl object-cover"
-                  />
+                  <div className="relative h-82 w-full overflow-hidden rounded-xl">
+                    <Image
+                      src={preview}
+                      alt="Tuition cover preview"
+                      fill
+                      sizes="(max-width: 768px) 100vw, 672px"
+                      className="rounded-xl object-cover"
+                    />
+                  </div>
                 ) : (
                   <>
                     <span className="font-extrabold">Upload banner image</span>

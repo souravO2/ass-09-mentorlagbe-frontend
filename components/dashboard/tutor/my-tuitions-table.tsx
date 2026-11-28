@@ -35,6 +35,7 @@ import {
 } from "@/components/ui/dialog"
 import EditForm from "./EditForm"
 import { useClientToken } from "@/lib/session/clientToken"
+import Image from "next/image"
 
 const approvalStyle: Record<Tuition["approvalStatus"], string> = {
   pending: "bg-lemon",
@@ -145,10 +146,11 @@ const MyTuitionsTable = ({ tuitions }: { tuitions: Tuition[] }) => {
           >
             {/* Banner and details */}
             <div className="flex min-w-0 gap-4">
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img
+              <Image
                 src={t.bannerImage}
-                alt=""
+                alt={t.title}
+                width={96}
+                height={96}
                 className="size-24 shrink-0 rounded-xl border-2 border-ink object-cover"
               />
 
@@ -265,10 +267,11 @@ const MyTuitionsTable = ({ tuitions }: { tuitions: Tuition[] }) => {
             {items.map((t) => (
               <TableRow key={t._id}>
                 <TableCell>
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img
+                  <Image
                     src={t.bannerImage}
-                    alt=""
+                    alt={t.title}
+                    width={84}
+                    height={84}
                     className="size-14 rounded-lg border-2 border-ink object-cover"
                   />
                 </TableCell>

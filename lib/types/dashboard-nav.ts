@@ -1,5 +1,4 @@
 import {
-  Bookmark,
   BookOpen,
   ClipboardCheck,
   CreditCard,

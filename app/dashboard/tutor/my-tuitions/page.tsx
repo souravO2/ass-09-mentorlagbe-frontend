@@ -3,6 +3,7 @@ import { buttonVariants } from "@/components/ui/button"
 import { getServerSession } from "@/lib/session/serverSession"
 import { Tuition } from "@/lib/types/tuition"
 import { cn } from "@/lib/utils"
+import { SquarePlus } from "lucide-react"
 import Link from "next/link"
 
 export default async function MyTuitionsPage() {
@@ -41,6 +42,7 @@ export default async function MyTuitionsPage() {
             "h-12 rounded-full border-2 border-ink bg-lemon px-7 font-extrabold text-ink shadow-hard transition hover:-translate-y-0.5 hover:shadow-[5px_5px_0_black]"
           )}
         >
+          <SquarePlus className="mr-2 h-8 w-8" />
           Post a tuition
         </Link>
       </header>

@@ -1,6 +1,6 @@
 import type { Metadata } from "next"
 import Link from "next/link"
-import { SearchX } from "lucide-react"
+import { SearchX, SquarePlus } from "lucide-react"
 import { buttonVariants } from "@/components/ui/button"
 import { cn } from "@/lib/utils"
 import { PAGE_SIZE, parseTuitionQuery } from "@/lib/styles/tuition-query"
@@ -10,6 +10,7 @@ import TuitionFilters from "@/components/tuition/tuition-filter"
 import TuitionCard from "@/components/tuition/tuition-card"
 import EmptyState from "@/components/tuition/empty-state"
 import Pagination from "@/components/tuition/pagination"
+import { getServerSession } from "@/lib/session/serverSession"
 
 export const metadata: Metadata = {
   title: "Browse Tuitions | MentorLagbe",
@@ -22,6 +23,7 @@ export default async function TuitionsPage({
 }: {
   searchParams: Promise<Record<string, string | string[] | undefined>>
 }) {
+  const user = await getServerSession()
   const query = parseTuitionQuery(await searchParams)
   const { search, subject, classLevel, mode, page } = query
   const activeFilters = { search, subject, classLevel, mode }
@@ -49,12 +51,26 @@ export default async function TuitionsPage({
 
   return (
     <main className="mx-auto w-full max-w-7xl px-6 py-12">
-      <PageHeader
-        eyebrow="Browse"
-        title="Browse"
-        highlight="tuitions"
-        description="Find an approved tutor by subject, class level and mode."
-      />
+      <div className="flex flex-wrap items-center justify-between gap-4">
+        <PageHeader
+          eyebrow="Browse"
+          title="Browse"
+          highlight="tuitions"
+          description="Find an approved tutor by subject, class level and mode."
+        />
+        {user?.user?.role === "tutor" && (
+          <Link
+            href="/dashboard/tutor/post-tuition"
+            className={cn(
+              buttonVariants(),
+              "ml-auto h-12 rounded-full border-2 border-ink bg-lemon px-7 font-extrabold text-ink shadow-hard transition hover:-translate-y-0.5 hover:shadow-[5px_5px_0_black]"
+            )}
+          >
+            <SquarePlus className="mr-2 h-8 w-8" />
+            Post a tuition
+          </Link>
+        )}
+      </div>
 
       <div className="mt-10 grid gap-8 lg:grid-cols-[18rem_1fr] lg:items-start">
         <aside className="lg:sticky lg:top-28">
