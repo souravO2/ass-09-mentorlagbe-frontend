@@ -110,6 +110,7 @@ function Field({
 export default function PostTuitionPage() {
   const router = useRouter()
   const { data: session } = useSession()
+  const token = session?.session.token
   const plan = (session?.user.plan as string | undefined) ?? "free"
 
   const [form, setForm] = useState<TuitionForm>(initialForm)
@@ -250,6 +251,7 @@ export default function PostTuitionPage() {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
+          authorization: `Bearer ${token}`, // Use the server token for authorization
         },
         body: JSON.stringify({
           ...form,

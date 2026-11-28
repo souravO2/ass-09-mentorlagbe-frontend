@@ -219,7 +219,7 @@ export default function SignUpPage() {
             <Field>
               <Button
                 type="submit"
-                disabled={submitting}
+                disabled={submitting || !passwordValid}
                 className="h-15 w-full cursor-pointer rounded-full border-2 border-[#171717] bg-[#4038F5] text-lg font-bold text-white shadow-[4px_5px_0_#171717] transition hover:bg-[#342CE0] hover:shadow-[4px_6px_0_#171717] active:translate-y-1 active:shadow-none disabled:opacity-60"
               >
                 {submitting && <Loader2 className="size-4 animate-spin" />}

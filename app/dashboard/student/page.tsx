@@ -2,11 +2,12 @@ import { CheckCircle2, Clock, FileText } from "lucide-react"
 import DashboardOverview, {
   planStat,
 } from "@/components/dashboard/dashboard-overview"
-import { getServerSession } from "@/lib/serverSession"
+import { getServerSession } from "@/lib/session/serverSession"
 
 export default async function StudentOverviewPage() {
   // TODO: fetch these for the logged-in student
   const session = await getServerSession()
+  const token = session?.session.token
 
   const res = await fetch(
     `${process.env.NEXT_PUBLIC_API_URL}/applications?studentId=${session?.user.id}`,
@@ -14,6 +15,7 @@ export default async function StudentOverviewPage() {
       headers: {
         "Content-Type": "application/json",
         // Add any necessary authentication headers here
+        authorization: `Bearer ${token}`,
       },
     }
   )

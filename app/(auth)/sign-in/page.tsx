@@ -3,7 +3,7 @@
 import * as React from "react"
 import Link from "next/link"
 import { useRouter } from "next/navigation"
-import { Loader2 } from "lucide-react"
+import { Loader2, Eye, EyeOff } from "lucide-react"
 import { FcGoogle } from "react-icons/fc"
 import { toast } from "sonner"
 
@@ -22,7 +22,7 @@ export default function SignInPage() {
   const router = useRouter()
 
   const [submitting, setSubmitting] = React.useState(false)
-
+  const [showPassword, setShowPassword] = React.useState(false)
   const handleEmailSignIn = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
 
@@ -105,14 +105,25 @@ export default function SignInPage() {
                 Password
               </FieldLabel>
 
-              <Input
-                id="password"
-                name="password"
-                type="password"
-                autoComplete="current-password"
-                className={inputClass}
-                required
-              />
+              <div className="relative">
+                <Input
+                  id="password"
+                  name="password"
+                  type={showPassword ? "text" : "password"}
+                  autoComplete="current-password"
+                  className={`${inputClass} pr-12`}
+                  required
+                />
+
+                <button
+                  type="button"
+                  onClick={() => setShowPassword((prev) => !prev)}
+                  className="absolute top-1/2 right-4 -translate-y-1/2 text-[#555566] hover:text-[#4038F5]"
+                  aria-label={showPassword ? "Hide password" : "Show password"}
+                >
+                  {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
+                </button>
+              </div>
             </Field>
 
             {/* Sign In */}

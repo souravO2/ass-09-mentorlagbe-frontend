@@ -34,6 +34,7 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog"
 import EditForm from "./EditForm"
+import { useClientToken } from "@/lib/session/clientToken"
 
 const approvalStyle: Record<Tuition["approvalStatus"], string> = {
   pending: "bg-lemon",
@@ -52,6 +53,7 @@ const fmtDate = (iso: string) =>
   })
 
 const MyTuitionsTable = ({ tuitions }: { tuitions: Tuition[] }) => {
+  const token = useClientToken() // Fetch the client token for authentication
   const [items, setItems] = useState(tuitions)
   const [editTarget, setEditTarget] = useState<Tuition | null>(null)
   const [deleteTarget, setDeleteTarget] = useState<Tuition | null>(null)
@@ -86,7 +88,10 @@ const MyTuitionsTable = ({ tuitions }: { tuitions: Tuition[] }) => {
         `${process.env.NEXT_PUBLIC_API_URL}/tuitions/${t._id}`,
         {
           method: "PATCH",
-          headers: { "Content-Type": "application/json" },
+          headers: {
+            "Content-Type": "application/json",
+            authorization: `Bearer ${token}`,
+          }, // Use the client token for authorization
           body: JSON.stringify({ isActive: next }),
         }
       )
@@ -112,7 +117,10 @@ const MyTuitionsTable = ({ tuitions }: { tuitions: Tuition[] }) => {
         `${process.env.NEXT_PUBLIC_API_URL}/tuitions/${deleteTarget._id}`,
         {
           method: "DELETE",
-          headers: { "Content-Type": "application/json" },
+          headers: {
+            "Content-Type": "application/json",
+            authorization: `Bearer ${token}`,
+          }, // Use the client token for authorization
         }
       )
       if (!res.ok) throw new Error()

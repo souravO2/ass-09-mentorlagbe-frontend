@@ -1,14 +1,15 @@
 import { DollarSign, GraduationCap, ListChecks, Users } from "lucide-react"
 import DashboardOverview from "@/components/dashboard/dashboard-overview"
-import { getServerSession } from "@/lib/serverSession"
+import { getServerToken } from "@/lib/session/serverToken"
 
 export default async function AdminOverviewPage() {
   // TODO: fetch these platform-wide
-  const session = await getServerSession()
+  const token = await getServerToken() // Use the server token for authentication
   const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/admin/stats`, {
     headers: {
       "Content-Type": "application/json",
       // Add any necessary authentication headers here
+      authorization: `Bearer ${token}`,
     },
   })
   const result = await res.json()

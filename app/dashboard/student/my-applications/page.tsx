@@ -1,5 +1,5 @@
 import MyApplications from "@/components/dashboard/student/my-applications"
-import { getServerSession } from "@/lib/serverSession"
+import { getServerSession } from "@/lib/session/serverSession"
 import type { Application } from "@/lib/types/application"
 
 export default async function MyApplicationsPage() {
@@ -11,7 +11,13 @@ export default async function MyApplicationsPage() {
   }
   const res = await fetch(
     `${process.env.NEXT_PUBLIC_API_URL}/applications?studentId=${session.user.id}`,
-    { cache: "no-store" }
+    {
+      cache: "no-store",
+      headers: {
+        "Content-Type": "application/json",
+        authorization: `Bearer ${session.session.token}`,
+      },
+    }
   )
   if (!res.ok) {
     throw new Error("Failed to fetch applications")

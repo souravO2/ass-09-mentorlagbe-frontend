@@ -1,9 +1,11 @@
 import TuitionApprovals from "@/components/dashboard/tutor/tuition-approvals"
-import { getServerSession } from "@/lib/serverSession"
+import { getServerToken } from "@/lib/session/serverToken"
+import { getServerSession } from "@/lib/session/serverSession"
 import { Application } from "@/lib/types/application"
 
 export default async function TuitionApprovalsPage() {
   const session = await getServerSession()
+  const token = await getServerToken() // Fetch the server token for authentication
 
   if (!session || session.user.role !== "tutor") {
     throw new Error("User is not an admin or not logged in")
@@ -12,7 +14,10 @@ export default async function TuitionApprovalsPage() {
   // Replace with your existing admin endpoint.
   const res = await fetch(
     `${process.env.NEXT_PUBLIC_API_URL}/applications?tutorId=${session.user.id}`,
-    { cache: "no-store" }
+    {
+      cache: "no-store",
+      headers: { authorization: `Bearer ${token}` },
+    }
   )
 
   if (!res.ok) {

@@ -19,7 +19,7 @@ import PageHeader from "@/components/tuition/page-header"
 import { inputClass } from "@/lib/styles/form-styles"
 import type { Payment } from "@/lib/types/payment"
 import { cn } from "@/lib/utils"
-import UserCell from "../admin/user-cell"
+import UserCell from "./user-cell"
 import { RoleBadge } from "@/components/Navbar/ProfileMenu"
 
 type Filter = "all" | Payment["customer_role"]

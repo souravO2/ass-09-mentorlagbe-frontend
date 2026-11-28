@@ -1,6 +1,6 @@
 import MyTuitionsTable from "@/components/dashboard/tutor/my-tuitions-table"
 import { buttonVariants } from "@/components/ui/button"
-import { getServerSession } from "@/lib/serverSession"
+import { getServerSession } from "@/lib/session/serverSession"
 import { Tuition } from "@/lib/types/tuition"
 import { cn } from "@/lib/utils"
 import Link from "next/link"

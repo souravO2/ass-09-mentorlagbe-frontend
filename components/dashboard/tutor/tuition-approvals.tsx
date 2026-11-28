@@ -3,9 +3,7 @@
 import { useState } from "react"
 import { toast } from "sonner"
 import { Loader2 } from "lucide-react"
-
 import type { Application, ApplicationStatus } from "@/lib/types/application"
-
 import { Button } from "@/components/ui/button"
 import {
   Table,
@@ -28,6 +26,7 @@ import {
 import { Badge } from "@/components/ui/badge"
 import { cn } from "@/lib/utils"
 import PageHeader from "@/components/tuition/page-header"
+import { useClientToken } from "@/lib/session/clientToken"
 
 type Filter = "all" | ApplicationStatus
 
@@ -64,6 +63,7 @@ export default function ApplicationApprovals({
 }: {
   initialApplications: Application[]
 }) {
+  const token = useClientToken() // Fetch the client token for authentication
   const [items, setItems] = useState(initialApplications)
   const [filter, setFilter] = useState<Filter>("all")
   const [busyId, setBusyId] = useState<string | null>(null)
@@ -103,7 +103,6 @@ export default function ApplicationApprovals({
     nextStatus: ApplicationStatus
   ) {
     if (busyId) return
-
     const previousStatus = application.status
 
     setBusyId(application._id)
@@ -122,6 +121,7 @@ export default function ApplicationApprovals({
           method: "PATCH",
           headers: {
             "Content-Type": "application/json",
+            authorization: `Bearer ${token}`, // Use the server token for authorization
           },
           body: JSON.stringify({
             status: nextStatus,

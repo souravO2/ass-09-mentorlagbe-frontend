@@ -125,7 +125,7 @@ function LimitNote({
 
 export default function ApplyForm({ tuition }: { tuition: Tuition }) {
   const { data: session, isPending } = authClient.useSession()
-
+  const token = session?.session.token
   const user = session?.user
   const role = user?.role as string | undefined
   const isPro = user?.plan === "pro"
@@ -163,6 +163,7 @@ export default function ApplyForm({ tuition }: { tuition: Tuition }) {
 
         const res = await fetch(`${API_URL}/applications?${params}`, {
           cache: "no-store",
+          headers: { Authorization: `Bearer ${token}` },
           signal: controller.signal,
         })
         if (!res.ok) throw new Error("Could not load application status")
@@ -182,7 +183,7 @@ export default function ApplyForm({ tuition }: { tuition: Tuition }) {
 
     loadStatus()
     return () => controller.abort()
-  }, [studentId, tuition._id, retryKey])
+  }, [studentId, tuition._id, token, retryKey])
 
   function retryLimitCheck() {
     setLimitStatus("loading")
@@ -227,7 +228,10 @@ export default function ApplyForm({ tuition }: { tuition: Tuition }) {
     try {
       const res = await fetch(`${API_URL}/applications`, {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: {
+          "Content-Type": "application/json",
+          authorization: `Bearer ${token}`,
+        },
         body: JSON.stringify({
           tuitionId: tuition._id,
           tutorId: tuition.tutorId,

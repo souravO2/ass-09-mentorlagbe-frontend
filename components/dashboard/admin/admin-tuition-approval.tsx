@@ -29,6 +29,7 @@ import PageHeader from "@/components/tuition/page-header"
 import Link from "next/link"
 import { Input } from "@/components/ui/input"
 import { inputClass } from "@/lib/styles/form-styles"
+import { useClientToken } from "@/lib/session/clientToken"
 
 type ApprovalStatus = Tuition["approvalStatus"]
 type Filter = "all" | ApprovalStatus
@@ -68,6 +69,7 @@ export default function AdminTuitionApprovals({
 }: {
   initialApplications: Tuition[]
 }) {
+  const token = useClientToken() // Use the client token for authentication
   const [items, setItems] = useState(initialApplications)
   const [filter, setFilter] = useState<Filter>("all")
   const [busyId, setBusyId] = useState<string | null>(null)
@@ -143,6 +145,7 @@ export default function AdminTuitionApprovals({
           method: "PATCH",
           headers: {
             "Content-Type": "application/json",
+            authorization: `Bearer ${token}`, // Use the client token for authentication
           },
           body: JSON.stringify({
             approvalStatus: nextStatus,

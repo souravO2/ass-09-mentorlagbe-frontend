@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server"
 import { headers } from "next/headers"
 import { stripe } from "@/lib/stripe"
-import { getServerSession } from "@/lib/serverSession"
+import { getServerSession } from "@/lib/session/serverSession"
 
 const PLANS = {
   student: {

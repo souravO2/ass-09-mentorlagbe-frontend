@@ -2,17 +2,20 @@ import { BookOpen, CheckCircle2, Users } from "lucide-react"
 import DashboardOverview, {
   planStat,
 } from "@/components/dashboard/dashboard-overview"
-import { getServerSession } from "@/lib/serverSession"
+import { getServerSession } from "@/lib/session/serverSession"
+import { getServerToken } from "@/lib/session/serverToken"
 
 export default async function TutorOverviewPage() {
   // TODO: fetch these for the logged-in tutor
   const session = await getServerSession()
+  const token = await getServerToken() // Fetch the server token for authentication
   const tuitionRes = await fetch(
     `${process.env.NEXT_PUBLIC_API_URL}/tuitions?tutorId=${session?.user.id}`,
     {
       headers: {
         "Content-Type": "application/json",
         // Add any necessary authentication headers here
+        authorization: `Bearer ${token}`, // Use the server token for authorization
       },
     }
   )
@@ -22,6 +25,7 @@ export default async function TutorOverviewPage() {
       headers: {
         "Content-Type": "application/json",
         // Add any necessary authentication headers here
+        authorization: `Bearer ${token}`, // Use the server token for authorization
       },
     }
   )

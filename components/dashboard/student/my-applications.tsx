@@ -29,6 +29,7 @@ import type { Application, ApplicationStatus } from "@/lib/types/application"
 import { cn } from "@/lib/utils"
 import StatusBadge from "./status-badge"
 import { useSearchParams } from "next/navigation"
+import { useClientToken } from "@/lib/session/clientToken"
 
 type Filter = "all" | ApplicationStatus
 
@@ -54,6 +55,7 @@ export default function MyApplications({
 }: {
   initialApplications: Application[]
 }) {
+  const token = useClientToken()
   const [items, setItems] = useState(initialApplications)
   const [cancelTarget, setCancelTarget] = useState<Application | null>(null)
   const [cancelling, setCancelling] = useState(false)
@@ -88,6 +90,10 @@ export default function MyApplications({
         `${process.env.NEXT_PUBLIC_API_URL}/applications/${cancelTarget._id}`,
         {
           method: "DELETE",
+          headers: {
+            "Content-Type": "application/json",
+            authorization: `Bearer ${token}`,
+          },
         }
       )
       if (!res.ok) {

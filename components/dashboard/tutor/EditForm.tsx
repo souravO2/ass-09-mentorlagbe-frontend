@@ -16,6 +16,7 @@ import {
 import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
 import { Textarea } from "@/components/ui/textarea"
+import { useClientToken } from "@/lib/session/clientToken"
 
 type EditState = {
   title: string
@@ -94,6 +95,7 @@ export default function EditForm({
   })
   const [errors, setErrors] = useState<EditErrors>({})
   const [isSubmitting, setIsSubmitting] = useState(false)
+  const token = useClientToken() // Fetch the client token for authentication
 
   function setField<K extends keyof EditState>(key: K, value: EditState[K]) {
     setForm((prev) => ({ ...prev, [key]: value }))
@@ -165,7 +167,10 @@ export default function EditForm({
         `${process.env.NEXT_PUBLIC_API_URL}/tuitions/${tuition._id}`,
         {
           method: "PATCH",
-          headers: { "Content-Type": "application/json" },
+          headers: {
+            "Content-Type": "application/json",
+            authorization: `Bearer ${token}`,
+          }, // Use the server token for authorization
           body: JSON.stringify(changes),
         }
       )

@@ -15,12 +15,18 @@ import InfoTile from "@/components/tuition/info-tile"
 import TutorCard from "@/components/tuition/tutor-card"
 import type { Tuition } from "@/lib/types/tuition"
 import { cn } from "@/lib/utils"
-import { getServerSession } from "@/lib/serverSession"
+import { getServerSession } from "@/lib/session/serverSession"
 import Image from "next/image"
+import { getServerToken } from "@/lib/session/serverToken"
 
 async function getTuition(id: string, role?: string): Promise<Tuition> {
+  const token = await getServerToken()
+  console.log("Server token:", token) // Debugging line to check the token value
   const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/tuitions/${id}`, {
     cache: "no-store",
+    headers: {
+      authorization: `Bearer ${token}`,
+    },
   })
 
   if (res.status === 404) notFound()

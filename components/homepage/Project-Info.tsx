@@ -1,4 +1,3 @@
-
 import {
   Code2,
   Database,
@@ -76,7 +75,7 @@ const highlights = [
 export default function ProjectBehindSection() {
   return (
     <section className="px-4 py-20 sm:px-6 lg:px-8">
-      <div className="mx-auto max-w-7xl">
+      <div className="mx-auto max-w-7xl md:px-8">
         {/* Section heading */}
         <div className="mb-12 grid gap-6 md:grid-cols-2 md:items-end">
           <div>
@@ -161,8 +160,8 @@ export default function ProjectBehindSection() {
 
           <p className="max-w-md text-sm leading-6 text-white/70">
             From designing the database to connecting frontend forms with
-            backend APIs, MentorLagbe helped me practice building a complete
-            web application.
+            backend APIs, MentorLagbe helped me practice building a complete web
+            application.
           </p>
         </div>
       </div>

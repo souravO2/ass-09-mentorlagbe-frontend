@@ -73,6 +73,7 @@ export default function UsersTable({
   initialUsers: AppUser[]
 }) {
   const { data: session } = useSession()
+  const token = session?.session.token
   const meId = session?.user.id
   const searchParams = useSearchParams()
 
@@ -128,6 +129,7 @@ export default function UsersTable({
           method: "PATCH",
           headers: {
             "Content-Type": "application/json",
+            authorization: `Bearer ${token}`,
           },
           body: JSON.stringify({ role }),
         }
