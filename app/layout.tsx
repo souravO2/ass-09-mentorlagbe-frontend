@@ -3,6 +3,7 @@ import { Metadata } from "next"
 import "./globals.css"
 import { ThemeProvider } from "@/components/theme-provider"
 import SiteChrome from "@/components/shared/SiteChrome"
+import { Toaster } from "@/components/ui/Toaster"
 
 const archivo = Archivo({
   subsets: ["latin"],
@@ -34,6 +35,7 @@ export default function RootLayout({
       <body className="bg-paper font-sans text-ink">
         <ThemeProvider>
           <SiteChrome>{children}</SiteChrome>
+          <Toaster />
         </ThemeProvider>
       </body>
     </html>

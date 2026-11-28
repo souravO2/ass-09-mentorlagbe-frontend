@@ -5,7 +5,6 @@ import Link from "next/link"
 import { useRouter } from "next/navigation"
 import { Eye, EyeOff, Loader2 } from "lucide-react"
 import { toast } from "sonner"
-
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import {
@@ -14,7 +13,6 @@ import {
   FieldGroup,
   FieldLabel,
 } from "@/components/ui/field"
-
 import { authClient, signIn } from "@/lib/auth-client"
 import { FcGoogle } from "react-icons/fc"
 

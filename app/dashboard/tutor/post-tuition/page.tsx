@@ -73,9 +73,10 @@ async function uploadToImgBB(file: File) {
   const json = await res.json()
 
   if (!res.ok || !json.success || !json.url) {
+    toast.error("Banner upload failed. Please try another image.")
     throw new Error("Banner upload failed. Please try another image.")
   }
-
+  toast.success("Banner uploaded successfully!")
   return json.url as string
 }
 

@@ -2,9 +2,7 @@
 
 import { useEffect, useState } from "react"
 import { useSession, authClient, signOut } from "@/lib/auth-client"
-import { toast } from "sonner"
 import { redirect } from "next/navigation"
-
 import { Button } from "@/components/ui/button"
 import {
   Select,
@@ -13,12 +11,12 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select"
-
 import { ProfileImageUpload } from "@/components/profile/ProfileImageUpload"
 import { ProfileField } from "@/components/profile/ProfileField"
 import { ProfileConfirmDialog } from "@/components/profile/ConfirmDialog"
 import { cn } from "@/lib/utils"
 import { useRouter } from "next/navigation"
+import { toast } from "sonner"
 
 type UserRole = "student" | "tutor"
 type UserPlan = "free" | "pro"
